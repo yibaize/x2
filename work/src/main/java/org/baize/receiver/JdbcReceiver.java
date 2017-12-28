@@ -3,6 +3,7 @@ package org.baize.receiver;
 
 import org.baize.maseegehandler.JdbcTemplate;
 import org.baize.model.JdbcModel;
+import org.baize.player.PlayerEntity;
 
 /**
  * 作者： 白泽
@@ -11,11 +12,22 @@ import org.baize.model.JdbcModel;
  */
 public class JdbcReceiver {
     private final JdbcTemplate jdbcTemplate;
-
-    public JdbcReceiver(JdbcModel model) {
-        this.jdbcTemplate = new JdbcTemplate(model);
+    private static JdbcReceiver instance;
+    public static JdbcReceiver getInstance(){
+        if(instance == null)
+            instance = new JdbcReceiver();
+        return instance;
+    }
+    public JdbcReceiver() {
+        this.jdbcTemplate = new JdbcTemplate(new PlayerEntity());
     }
     public void commit(JdbcModel model){
         jdbcTemplate.commit(model);
+    }
+    public JdbcModel select(JdbcModel model){
+        return jdbcTemplate.select(model);
+    }
+    public void insert(JdbcModel model){
+        jdbcTemplate.insert(model);
     }
 }

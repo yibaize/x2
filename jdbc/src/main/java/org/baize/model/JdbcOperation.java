@@ -94,6 +94,18 @@ public class JdbcOperation {
         }
         return model;
     }
+    public List<JdbcModel> selectAll(JdbcModel model){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(tableSqlModel.getField());
+            List<JdbcModel> m = sqlJiont.tableInfo(ps,model,0);
+            return m;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void delete(JdbcModel model){
         Connection conn = null;
         try {
@@ -106,17 +118,14 @@ public class JdbcOperation {
             close(conn);
         }
     }
-    public static int i = 0;
     private int tableInsert(JdbcModel model, Connection conn){
         PreparedStatement ps = null;
         try {
-            String sql = "INSERT INTO test (a,b,c,d) VALUES (?,?,?,?)";
             ps = conn.prepareStatement(tableSqlModel.getInsert());
-            ps = conn.prepareStatement(sql);
             ps = sqlJiont.valuation(ps,model);
-            i++;
             return ps.executeUpdate();
         } catch (Exception e) {
+            //注册失败
             e.printStackTrace();
         }
         return -1;
@@ -126,7 +135,7 @@ public class JdbcOperation {
         try {
             ps = conn.prepareStatement(tableSqlModel.getUpdate());
             ps = sqlJiont.valuation(ps,model);
-            ps.setInt(sqlJiont.getMap().size() + 1,model.id());
+            ps.setInt(sqlJiont.getMap().size() + 1,model.getId());
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +146,7 @@ public class JdbcOperation {
         PreparedStatement ps = null;
         try {
             conn.prepareStatement(tableSqlModel.getDelete());
-            ps.setObject(1,model.id());
+            ps.setObject(1,model.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,8 +156,10 @@ public class JdbcOperation {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(tableSqlModel.getSelect());
-            JdbcModel m = sqlJiont.tableInfo(ps,model);
-            return m;
+            List<JdbcModel> m = sqlJiont.tableInfo(ps,model,1);
+            if(m.size() > 0)
+                return m.get(0);
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,7 +173,7 @@ public class JdbcOperation {
             for(int i = 0;i<models.size();i++) {
                 JdbcModel model = models.get(i);
                 ps = sqlJiont.valuation(ps, model);
-                ps.setInt(sqlJiont.getMap().size() + 1, model.id());
+                ps.setInt(sqlJiont.getMap().size() + 1, model.getId());
                 ps.addBatch();
             }
             ps.executeBatch();

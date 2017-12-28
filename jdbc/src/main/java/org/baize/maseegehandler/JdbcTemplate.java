@@ -61,7 +61,7 @@ public class JdbcTemplate {
                     }
                     return;//防止线程挂起阻塞
                 }
-                operation.inset(msg);
+                operation.update(msg);
             }
         }, 0,3L, TimeUnit.MINUTES);
     }

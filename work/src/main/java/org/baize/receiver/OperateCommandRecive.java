@@ -1,5 +1,4 @@
 package org.baize.receiver;
-import org.baize.login.LoginCommand;
 public class OperateCommandRecive{
 	private static OperateCommandRecive instance;
 	public static OperateCommandRecive getInstance(){
@@ -10,12 +9,8 @@ public class OperateCommandRecive{
 	public OperateCommandAbstract recieve(int id,String[] params){
 		switch (id){
 			case 1:
-				return getLoginCommand(params);
 			default:
 				return null;
 		}
-	}
-	private OperateCommandAbstract getLoginCommand(String[] params){
-		return new LoginCommand();
 	}
 }

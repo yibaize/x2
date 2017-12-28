@@ -9,7 +9,9 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,7 +74,7 @@ public class SqlJiont {
     }
     public String tableSelect(){
         StringBuffer sb = new StringBuffer();
-        return "SELECT * FROM "+tableName+" WHERE id = ?;";
+        return "SELECT * FROM "+tableName+" WHERE account = ?;";
     }
     public String tableSelectAll(){
         return "SELECT * FROM "+tableName+" WHERE id > ?;";
@@ -131,41 +133,56 @@ public class SqlJiont {
         }
         return null;
     }
-    public JdbcModel tableInfo(PreparedStatement ps, JdbcModel model){
+    public List<JdbcModel> tableInfo(PreparedStatement ps, JdbcModel model,int type){
         try {
-            Object o = model.getClass().newInstance();
-            Field[] fields = model.getClass().getDeclaredFields();
-            ps.setObject(1,model.id());
+            List<JdbcModel> modelList = new ArrayList<>();
+           if(type == 1)
+                ps.setObject(1,model.getAccount());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
+                Object o = model.getClass().newInstance();
+                Field[] fields = model.getClass().getDeclaredFields();
+                int id = -1;
                 for(int i = 0;i<fields.length;i++){
                     String s = "{}";
-                    String fieldName = fields[i].getName();
+                    Field field = fields[i];
+                    String fieldName = field.getName();
+                    if(fieldName.equals("id")){
+                        id = rs.getInt("id");
+                        setField(field,o,id);
+                    }
                     if(map.containsKey(fieldName)){
                         s = rs.getString(fieldName);
-                        Field field = fields[i];
                         if(field.getType() != String.class) {
                             JdbcModel m = JSON.parseObject(s, (Type) field.getType());
-                            field.setAccessible(true);
-                            Field modifiersField = Field.class.getDeclaredField("modifiers");
-                            modifiersField.setAccessible(true);
-                            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-                            field.set(o,m);
+                            m.setId(id);
+                            setField(field,o,m);
                         }else {
-                            field.setAccessible(true);
-                            Field modifiersField = Field.class.getDeclaredField("modifiers");
-                            modifiersField.setAccessible(true);
-                            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-                            field.set(o,s);
+                            setField(field,o,s);
                         }
                     }
                 }
+                model = (JdbcModel) o;
+                model.setId(id);
+                modelList.add(model);
             }
-            return (JdbcModel) o;
+            return modelList;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+    private void setField(Field field,Object o,Object s){
+        try {
+            field.setAccessible(true);
+            Field modifiersField = null;
+            modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(o,s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public String oneField(Class<?> clazz){
         StringBuffer sb = new StringBuffer();
