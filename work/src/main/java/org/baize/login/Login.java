@@ -1,14 +1,19 @@
 package org.baize.login;
 
 import org.baize.assemblybean.annon.Protocol;
-import org.baize.excel.ExcelUtils;
-import org.baize.excel.StaticConfigMessage;
+import org.baize.error.AppErrorCode;
+import org.baize.error.GenaryAppError;
 import org.baize.message.IProtostuff;
 import org.baize.player.PlayerDataTable;
 import org.baize.player.PlayerEntity;
-import org.baize.player.PlayerEntityDto;
+import org.baize.player.PlayerOperation;
 import org.baize.receiver.JdbcReceiver;
 import org.baize.receiver.OperateCommandAbstract;
+import org.baize.room.Room;
+import org.baize.room.RoomManager;
+import org.baize.session.ISession;
+import org.baize.session.SessionManager;
+import org.baize.weath.Weath;
 
 
 /**
@@ -26,25 +31,40 @@ public class Login extends OperateCommandAbstract {
 
     @Override
     public IProtostuff execute() {
-        PlayerEntity entity = new PlayerEntity();
-        entity.setAccount(account);
-        entity = (PlayerEntity) JdbcReceiver.getInstance().select(entity);
-        if(entity == null){
-            PlayerDataTable dataTable = PlayerDataTable.get(1);
+        ISession session = getSession();
+        PlayerEntity entity = null;
+        if(session != null){
+            //回话已经登陆 抛异常
+            new GenaryAppError(AppErrorCode.LOGIN_ERR);
+        }else {
+            entity = new PlayerEntity();
             entity.setAccount(account);
-            JdbcReceiver.getInstance().insert(entity);
+            //数据库查找
             entity = (PlayerEntity) JdbcReceiver.getInstance().select(entity);
+            //数据库还没有
+            if (entity == null) {
+                //注册
+                PlayerDataTable dataTable = PlayerDataTable.get(1);
+                entity.setAccount(account);
+                entity.setWeath(new Weath(dataTable.getGold(),dataTable.getDiamond()));
+                JdbcReceiver.getInstance().insert(entity);
+                entity = (PlayerEntity) JdbcReceiver.getInstance().select(entity);
+            }
         }
-        if(entity == null){
-
+        if(SessionManager.isOnlinePlayer(entity.getId())){
+            hasLogin(SessionManager.removeSession(entity.getId()));
         }
-        return entity.dto();
+        Room room = RoomManager.getInstance().getRoomById(1);
+        //加入在线玩家会话
+        PlayerOperation operation = new PlayerOperation(entity,session,room);
+        if(SessionManager.putSession(entity.getId(),session)){
+            session.setAttachment(operation);
+        }
+        return entity.selfDto();
     }
-
-
-
-    //    public static void main(String[] args) {
-//        ExcelUtils.init("excel");
-//        System.out.println(StaticConfigMessage.getInstance().getMap(ShopDataTable.class));
-//    }
+    /**账号已经被登陆,踢老用户下线*/
+    private void hasLogin(ISession session){
+        session.removeAttachment();
+        session.close();
+    }
 }

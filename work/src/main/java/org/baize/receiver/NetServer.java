@@ -3,6 +3,7 @@ package org.baize.receiver;
 
 import org.baize.StringUtils;
 import org.baize.manager.Request;
+import org.baize.message.IProtostuff;
 import org.baize.message.TcpHandler;
 import org.baize.ransitshipment.IRepeater;
 import org.baize.session.ISession;
@@ -22,6 +23,10 @@ public class NetServer implements IRepeater {
             short id = request.getId();
             String[] s = StringUtils.split(request.getData().getMsg(),",");
             OperateCommandAbstract msg = OperateCommandRecive.getInstance().recieve(id,s);
+            msg.setCmdId(id);
+            msg.setSession(session);
+            IProtostuff ptf = msg.execute();
+            msg.broadcast();
         }catch (Exception e){
         }
     }

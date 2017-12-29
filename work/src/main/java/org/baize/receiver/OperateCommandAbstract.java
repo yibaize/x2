@@ -13,6 +13,23 @@ import org.baize.session.ISession;
 public abstract class OperateCommandAbstract implements IOperationCommand{
     private short cmdId;
     private ISession session;
+
+    public short getCmdId() {
+        return cmdId;
+    }
+
+    public void setCmdId(short cmdId) {
+        this.cmdId = cmdId;
+    }
+
+    public ISession getSession() {
+        return session;
+    }
+
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
     public void run() {
         IProtostuff pro = execute();
         byte[] buf = null;

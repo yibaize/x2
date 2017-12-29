@@ -1,6 +1,8 @@
 package org.baize.model;
 
 
+import org.baize.error.LogAppError;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -84,7 +86,6 @@ public class JdbcOperation {
         Connection conn = null;
         try {
             conn = jdbcPool.getConnction();
-            System.out.println(conn);
             if(model.getClass() == jdbcModel.getClass())
                 model = tableSelect(model,conn);
             else
@@ -126,7 +127,7 @@ public class JdbcOperation {
             return ps.executeUpdate();
         } catch (Exception e) {
             //注册失败
-            e.printStackTrace();
+            new LogAppError("注册账号为:"+model.getAccount()+"时出现异常");
         }
         return -1;
     }
@@ -149,7 +150,7 @@ public class JdbcOperation {
             ps.setObject(1,model.getId());
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            new LogAppError("删除账号为:"+model.getAccount()+"时出现异常");
         }
     }
     private JdbcModel tableSelect(JdbcModel model, Connection conn){

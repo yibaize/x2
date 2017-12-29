@@ -1,8 +1,8 @@
 package org.baize.player;
 
 import org.baize.annotations.TableName;
-import org.baize.model.JdbcModel;
-import org.baize.weath.Weath;
+import org.baize.player.weath.Weath;
+import org.baize.receiver.JdbcLogicModel;
 
 /**
  * 作者： 白泽
@@ -10,7 +10,7 @@ import org.baize.weath.Weath;
  * 描述：
  */
 @TableName("user")
-public class PlayerEntity extends JdbcModel{
+public class PlayerEntity extends JdbcLogicModel{
     private int id;
     private String account;
     private String name;
@@ -49,7 +49,7 @@ public class PlayerEntity extends JdbcModel{
         this.weath = weath;
     }
 
-    public PlayerEntityDto dto(){
+    public PlayerEntityDto selfDto(){
         PlayerEntityDto dto = new PlayerEntityDto();
         dto.setId(id);
         dto.setAccount(account);
@@ -57,5 +57,14 @@ public class PlayerEntity extends JdbcModel{
         dto.setDiamond(weath.getDiamond());
         dto.setGold(weath.getGold());
         return dto;
+    }
+    public PlayerEntityDto otherDto(){
+        //PlayerEntityDto dto = new PlayerEntityDto();
+//        dto.setId(id);
+//        dto.setAccount(account);
+//        dto.setName(name);
+//        dto.setDiamond(weath.getDiamond());
+//        dto.setGold(weath.getGold());
+        return null;
     }
 }

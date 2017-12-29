@@ -1,4 +1,4 @@
-package org.baize.shop.data;
+package org.baize.hall.shop.data;
 
 import org.baize.assemblybean.annon.DataTable;
 import org.baize.excel.DataTableMessage;

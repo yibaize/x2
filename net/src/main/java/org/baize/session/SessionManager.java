@@ -31,7 +31,7 @@ public class SessionManager {
      * @param playerId
      * @return
      */
-    public static boolean isOnlinePlayer(int playerId){
+    public static boolean isOnlinePlayer(Integer playerId){
         return onlineSessions.containsKey(playerId);
     }
 
@@ -48,26 +48,14 @@ public class SessionManager {
     public static Map<Integer,ISession> map(){
         return onlineSessions;
     }
-    public static void notifyAllx(short id,IProtostuff msg){
-        Response response = msg(id,msg);
-        for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
-            e.getValue().write(response);
-        }
-    }
-    public static void notifyAllNotSelf(short id,IProtostuff msg){
-        Response response = msg(id,msg);
-        for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
-            if (id != e.getKey())
-                e.getValue().write(response);
-        }
-    }
+
     /**
      * 发送消息[protoBuf协议]
      * @param <T>
      * @param playerId
      * @param
      */
-    public static <T extends IProtostuff> void sendMessage(int playerId, short id, IProtostuff msg){
+    public static void sendMessage(int playerId, short id, IProtostuff msg){
         Response response = msg(id,msg);
         ISession session = onlineSessions.get(playerId);
         if (session != null && session.isConnected()) {
@@ -83,12 +71,18 @@ public class SessionManager {
         response.setData(buf);
         return response;
     }
-    public static void notifyAllx(short id,byte[] buf){
-        Response response = new Response();
-        response.setId(id);
-        response.setData(buf);
+    /**通知所有在线玩家包括自己*/
+    public static void notifyAllx(short id,IProtostuff msg){
+        Response response = msg(id,msg);
         for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
-            if (id != e.getKey())
+            e.getValue().write(response);
+        }
+    }
+    /**通知所有在线玩家除了自己*/
+    public static void notifyAllx(int playerId,short id,byte[] buf){
+        Response response = new Response();
+        for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
+            if(e.getKey() != playerId)
                 e.getValue().write(response);
         }
     }
