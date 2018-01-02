@@ -85,62 +85,63 @@ public class CheckType {
         }
         return type;
     }
-    public static String getType(Type t,String beanName,String fieldName){
-        String type = "";
-        if(t == String.class)
-            type = "string";
-        else if(t == byte.class)
-            type = "byte";
-        else if(t == char.class)
-            type = "char";
-        else if(t == short.class)
-            type = "string";
-        else if(t == int.class)
-            type = "int";
-        else if(t == boolean.class)
-            type = "bool";
-        else if(t == float.class)
-            type = "float";
-        else if(t == double.class)
-            type = "double";
-        else if(t == long.class)
-            type = "long";
-        else
-            type = t.getClass().getSimpleName();
-        if (StringUtils.isBlank(type)) {
-            type = "Object";
-            LoggerUtils.getLogicLog().debug("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
-        }
-        return type;
-    }
-    public static String getType(Class<?> t,String beanName,String fieldName){
-        String type = "";
-        if(t == String.class)
-            type = "string";
-        else if(t == byte.class)
-            type = "byte";
-        else if(t == char.class)
-            type = "char";
-        else if(t == short.class)
-            type = "string";
-        else if(t == int.class)
-            type = "int";
-        else if(t == boolean.class)
-            type = "bool";
-        else if(t == float.class)
-            type = "float";
-        else if(t == double.class)
-            type = "double";
-        else if(t == long.class)
-            type = "long";
-        else
-            type = t.getSimpleName();
-        if (StringUtils.isBlank(type)) {
-            type = "Object";
-            LoggerUtils.getLogicLog().debug("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
-        }
-        return type;
-    }
+//    public static String getType(Type t,String beanName,String fieldName){
+//        String type = "";
+//        System.out.println(t.getTypeName());
+//        if(t == String.class)
+//            type = "string";
+//        else if(t == byte.class)
+//            type = "byte";
+//        else if(t == char.class)
+//            type = "char";
+//        else if(t == short.class)
+//            type = "string";
+//        else if(t == int.class)
+//            type = "int";
+//        else if(t == boolean.class)
+//            type = "bool";
+//        else if(t == float.class)
+//            type = "float";
+//        else if(t == double.class)
+//            type = "double";
+//        else if(t == long.class)
+//            type = "long";
+//        else
+//            type = t.getClass().getSimpleName();
+//        if (StringUtils.isBlank(type)) {
+//            type = "Object";
+//            LoggerUtils.getLogicLog().debug("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
+//        }
+//        return type;
+//    }
+//    public static String getType(Class<?> t,String beanName,String fieldName){
+//        String type = "";
+//        if(t == String.class)
+//            type = "string";
+//        else if(t == byte.class)
+//            type = "byte";
+//        else if(t == char.class)
+//            type = "char";
+//        else if(t == short.class)
+//            type = "string";
+//        else if(t == int.class)
+//            type = "int";
+//        else if(t == boolean.class)
+//            type = "bool";
+//        else if(t == float.class)
+//            type = "float";
+//        else if(t == double.class)
+//            type = "double";
+//        else if(t == long.class)
+//            type = "long";
+//        else
+//            type = t.getSimpleName();
+//        if (StringUtils.isBlank(type)) {
+//            type = "Object";
+//            LoggerUtils.getLogicLog().debug("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
+//        }
+//        return type;
+//    }
     public static String checkProtocolType(String str,String clazz){
         String type = "";
         switch (str){
@@ -235,12 +236,12 @@ public class CheckType {
         if(isMap){
             Class<?> genericClazz = (Class)pt.getActualTypeArguments()[0];
             Class<?> genericClazz1 = (Class)pt.getActualTypeArguments()[1];
-            String k = CheckType.getType(genericClazz,beanName,fieldName);
-            String v = CheckType.getType(genericClazz1,beanName,fieldName);
+            String k = CheckType.getArrType(genericClazz.getName(),beanName,fieldName);
+            String v = CheckType.getArrType(genericClazz1.getName(),beanName,fieldName);
             type = k+","+v;
         }else {
             Class genericClazz = (Class)pt.getActualTypeArguments()[0];
-            type = CheckType.getType(genericClazz,beanName,fieldName);
+            type = CheckType.getArrType(genericClazz.getName(),beanName,fieldName);
         }
         if (StringUtils.isBlank(type))
             LoggerUtils.getLogicLog().debug("集合类型错误异常");

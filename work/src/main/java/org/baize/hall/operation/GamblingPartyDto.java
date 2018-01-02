@@ -17,6 +17,9 @@ public class GamblingPartyDto  implements IProtostuff {
     private List<CardDto> otherDto;
     private int endTime;
 
+    public GamblingPartyDto() {
+    }
+
     public GamblingPartyDto(CardDto bankerDto, List<CardDto> otherDto) {
         this.bankerDto = bankerDto;
         this.otherDto = otherDto;

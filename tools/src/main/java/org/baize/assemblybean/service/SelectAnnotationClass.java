@@ -133,7 +133,7 @@ public class SelectAnnotationClass {
             }
             else {
                 Type type = fields[i].getGenericType();
-                typestr = CheckType.getType(type,beanName,fieldName);
+                typestr = CheckType.getArrType(type.getTypeName(),beanName,fieldName);
             }
             //属性名
             String field = fields[i].getName();

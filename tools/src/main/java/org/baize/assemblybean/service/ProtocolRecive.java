@@ -37,7 +37,7 @@ public class ProtocolRecive {
             protocolModule.setClazzName(c.getName());
             for (Class<?> class1 : paramType) {
                 i++;
-                String type = CheckType.getType(class1,c.getName(),"");
+                String type = CheckType.getArrType(class1.getName(),c.getName(),"");
                 if(StringUtils.equals(type,"string"))
                     type = "String";
                 fields.add(type);
@@ -135,6 +135,6 @@ public class ProtocolRecive {
         sb.append("}");
 //        WriteFile.writeText("OperateCommandRecive.java",sb.toString(),"E:\\javaDemo\\model\\LogicModel\\src\\main\\java\\org\\baize\\receiver");
 //        WriteFile.writeText("CommandCode.java",sb1.toString(),"E:\\javaDemo\\model\\LogicModel\\src\\main\\java\\org\\baize\\receiver");
-//        WriteFile.writeText("CommandCode.cs",sb2.toString(),"E:\\cs");
+        WriteFile.writeText("CommandCode.cs",sb2.toString(),"E:\\cs");
     }
 }

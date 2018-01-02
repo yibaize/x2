@@ -1,6 +1,7 @@
 package org.baize.login;
 
 import org.baize.assemblybean.annon.Protocol;
+import org.baize.assemblybean.service.SelectAnnotationClass;
 import org.baize.error.AppErrorCode;
 import org.baize.error.GenaryAppError;
 import org.baize.hall.room.Room;
@@ -64,5 +65,9 @@ public class Login extends OperateCommandAbstract {
     private void hasLogin(ISession session){
         session.removeAttachment();
         session.close();
+    }
+
+    public static void main(String[] args) {
+        SelectAnnotationClass.getIocClazz("org.baize");
     }
 }

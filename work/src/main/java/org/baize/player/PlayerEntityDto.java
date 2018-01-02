@@ -16,6 +16,9 @@ public class PlayerEntityDto implements IProtostuff{
     private long gold;
     private long diamond;
 
+    public PlayerEntityDto() {
+    }
+
     public int getId() {
         return id;
     }

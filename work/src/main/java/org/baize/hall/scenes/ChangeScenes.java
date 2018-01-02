@@ -11,7 +11,7 @@ import org.baize.receiver.OperateCommandAbstract;
  * 时间： 2017/12/29.
  * 描述：
  */
-@Protocol("2")
+@Protocol("4")
 public class ChangeScenes extends OperateCommandAbstract {
     private final int roomId;
 

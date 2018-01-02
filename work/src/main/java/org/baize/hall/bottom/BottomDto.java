@@ -15,6 +15,9 @@ public class BottomDto implements IProtostuff{
     private Map<Integer,Long> self;
     private Map<Integer,Long> other;
 
+    public BottomDto() {
+    }
+
     public BottomDto(Map<Integer, Long> self, Map<Integer, Long> other) {
         this.self = self;
         this.other = other;

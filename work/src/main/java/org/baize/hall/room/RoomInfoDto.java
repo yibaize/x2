@@ -20,6 +20,9 @@ public class RoomInfoDto implements IProtostuff {
     private boolean state;
     private List<String> bankerUpNamelList;
 
+    public RoomInfoDto() {
+    }
+
     public int getRoomId() {
         return roomId;
     }
