@@ -1,6 +1,9 @@
 package org.baize.player.weath;
 
-public class WeathDto {
+import org.baize.assemblybean.annon.Protostuff;
+import org.baize.message.IProtostuff;
+@Protostuff
+public class WeathDto implements IProtostuff{
     private long gold;
     private long diamond;
 

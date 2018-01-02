@@ -1,11 +1,13 @@
 package org.baize.test;
 
+import org.baize.model.JdbcModel;
+
 /**
  * 作者： 白泽
  * 时间： 2017/12/25.
  * 描述：
  */
-public class B extends JdbcModel {
+public class B implements JdbcModel {
     private String str = "撒的发生";
     private String s = "dsfsdfdsf奥术大师";
 
@@ -31,7 +33,17 @@ public class B extends JdbcModel {
         return "B{" +
                 "str='" + str + '\'' +
                 ", s='" + s + '\'' +
-                ", id=" + id +
                 '}';
+    }
+
+
+    @Override
+    public String account() {
+        return null;
+    }
+
+    @Override
+    public void setAccount(String account) {
+
     }
 }

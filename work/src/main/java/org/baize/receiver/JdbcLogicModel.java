@@ -8,22 +8,18 @@ import org.baize.model.JdbcModel;
  * 描述：
  */
 public abstract class JdbcLogicModel implements JdbcModel {
-    private transient int id;
     private transient String account;
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getAccount() {
-        return account;
-    }
-
+    @Override
     public void setAccount(String account) {
         this.account = account;
     }
+
+    @Override
+    public String account() {
+        return account;
+    }
+
     public void update(){
         JdbcReceiver.getInstance().commit(this);
     }

@@ -14,14 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * 描述：
  */
 public class SessionManager {
-    private static final ConcurrentHashMap<Integer, ISession> onlineSessions = new ConcurrentHashMap<>();
-    public static boolean putSession(Integer playerId,ISession session){
+    private static final ConcurrentHashMap<String, ISession> onlineSessions = new ConcurrentHashMap<>();
+    public static boolean putSession(String playerId,ISession session){
         boolean success = false;
         if(!onlineSessions.containsKey(playerId))
             success = onlineSessions.putIfAbsent(playerId,session) == null ? true : false;
         return success;
     }
-    public static ISession removeSession(int playerId){
+    public static ISession removeSession(String playerId){
         if(!onlineSessions.containsKey(playerId)) return null;
         return onlineSessions.remove(playerId);
     }
@@ -31,7 +31,7 @@ public class SessionManager {
      * @param playerId
      * @return
      */
-    public static boolean isOnlinePlayer(Integer playerId){
+    public static boolean isOnlinePlayer(String playerId){
         return onlineSessions.containsKey(playerId);
     }
 
@@ -39,23 +39,22 @@ public class SessionManager {
      * 获取所有在线玩家
      * @return
      */
-    public static Set<Integer> onlinePlayers() {
+    public static Set<String> onlinePlayers() {
         return Collections.unmodifiableSet(onlineSessions.keySet());
     }
     public static int onLinePlayerNum(){
         return onlineSessions == null ? 0 : onlineSessions.size();
     }
-    public static Map<Integer,ISession> map(){
+    public static Map<String,ISession> map(){
         return onlineSessions;
     }
 
     /**
      * 发送消息[protoBuf协议]
-     * @param <T>
      * @param playerId
      * @param
      */
-    public static void sendMessage(int playerId, short id, IProtostuff msg){
+    public static void sendMessage(String playerId, short id, IProtostuff msg){
         Response response = msg(id,msg);
         ISession session = onlineSessions.get(playerId);
         if (session != null && session.isConnected()) {
@@ -74,15 +73,15 @@ public class SessionManager {
     /**通知所有在线玩家包括自己*/
     public static void notifyAllx(short id,IProtostuff msg){
         Response response = msg(id,msg);
-        for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
+        for (Map.Entry<String,ISession> e: SessionManager.map().entrySet()){
             e.getValue().write(response);
         }
     }
     /**通知所有在线玩家除了自己*/
-    public static void notifyAllx(int playerId,short id,byte[] buf){
+    public static void notifyAllx(String playerId,short id,byte[] buf){
         Response response = new Response();
-        for (Map.Entry<Integer,ISession> e: SessionManager.map().entrySet()){
-            if(e.getKey() != playerId)
+        for (Map.Entry<String,ISession> e: SessionManager.map().entrySet()){
+            if(e.getKey().equals(playerId))
                 e.getValue().write(response);
         }
     }

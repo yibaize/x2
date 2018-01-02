@@ -24,7 +24,7 @@ public class JdbcOperation {
     private SqlJiont sqlJiont;
     //jdbc:mysql://127.0.0.1:3306/数据库名?useUnicode=true&characterEncoding=UTF-8
     public JdbcOperation(JdbcModel jdbcModel) {
-        jdbcPool = new JdbcPool("com.mysql.jdbc.Driver","jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=UTF-8", "root","",5,1,10);
+        jdbcPool = new JdbcPool("com.mysql.jdbc.Driver","jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=UTF-8", "root","root",5,1,10);
         this.jdbcModel = jdbcModel;
         sqlJiont = new SqlJiont(jdbcModel);
         tableName = sqlJiont.getTableName();
@@ -127,7 +127,7 @@ public class JdbcOperation {
             return ps.executeUpdate();
         } catch (Exception e) {
             //注册失败
-            new LogAppError("注册账号为:"+model.getAccount()+"时出现异常");
+            new LogAppError("注册账号为:"+model.account()+"时出现异常");
         }
         return -1;
     }
@@ -136,7 +136,7 @@ public class JdbcOperation {
         try {
             ps = conn.prepareStatement(tableSqlModel.getUpdate());
             ps = sqlJiont.valuation(ps,model);
-            ps.setInt(sqlJiont.getMap().size() + 1,model.getId());
+            ps.setObject(sqlJiont.getMap().size() + 1,model.account());
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,10 +147,10 @@ public class JdbcOperation {
         PreparedStatement ps = null;
         try {
             conn.prepareStatement(tableSqlModel.getDelete());
-            ps.setObject(1,model.getId());
+            ps.setObject(1,model.account());
             ps.executeUpdate();
         } catch (Exception e) {
-            new LogAppError("删除账号为:"+model.getAccount()+"时出现异常");
+            new LogAppError("删除账号为:"+model.account()+"时出现异常");
         }
     }
     private JdbcModel tableSelect(JdbcModel model, Connection conn){
@@ -174,7 +174,7 @@ public class JdbcOperation {
             for(int i = 0;i<models.size();i++) {
                 JdbcModel model = models.get(i);
                 ps = sqlJiont.valuation(ps, model);
-                ps.setInt(sqlJiont.getMap().size() + 1, model.getId());
+                ps.setObject(sqlJiont.getMap().size() + 1, model.account());
                 ps.addBatch();
             }
             ps.executeBatch();

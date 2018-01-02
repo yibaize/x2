@@ -1,11 +1,13 @@
 package org.baize.test;
 
+import org.baize.model.JdbcModel;
+
 /**
  * 作者： 白泽
  * 时间： 2017/12/25.
  * 描述：
  */
-public class C extends JdbcModel {
+public class C implements JdbcModel {
     private String name = "asdasd";
 
     public String getName() {
@@ -20,7 +22,16 @@ public class C extends JdbcModel {
     public String toString() {
         return "C{" +
                 "name='" + name + '\'' +
-                ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public String account() {
+        return null;
+    }
+
+    @Override
+    public void setAccount(String account) {
+
     }
 }

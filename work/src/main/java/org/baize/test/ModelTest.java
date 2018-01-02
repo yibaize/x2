@@ -9,8 +9,8 @@ import org.baize.model.JdbcModel;
  * 描述：
  */
 @TableName("test")
-public class ModelTest extends JdbcModel {
-    private int id;
+public class ModelTest implements JdbcModel {
+    private String account;
     private A a;
     private B b;
     private D d;
@@ -48,12 +48,19 @@ public class ModelTest extends JdbcModel {
         this.b = b;
     }
 
-    @Override
-    public void setId(int id) {
-        this.id = id;
+    public String getAccount() {
+        return c;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     @Override
+    public String account() {
+        return c;
+    }
+
     public int getId() {
         return Integer.parseInt(c);
     }
@@ -61,7 +68,6 @@ public class ModelTest extends JdbcModel {
     @Override
     public String toString() {
         return "ModelTest{" +
-                "id=" + id +
                 ", a=" + a +
                 ", b=" + b +
                 ", d=" + d +

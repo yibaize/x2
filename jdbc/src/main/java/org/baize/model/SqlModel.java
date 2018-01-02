@@ -100,7 +100,7 @@ public class SqlModel {
         ResultSet rs = null;
         try {
             ps = conn.prepareStatement(select);
-            ps.setObject(1,model.getId());
+            ps.setObject(1,model.account());
             rs = ps.executeQuery();
             String s = "{}";
             while (rs.next()){
@@ -119,7 +119,7 @@ public class SqlModel {
             ps = conn.prepareStatement(update);
             String value = JSON.toJSONString(model);//转json字段存储
             ps.setObject(1,value);
-            ps.setObject(2,model.getId());
+            ps.setObject(2,model.account());
             int i = ps.executeUpdate();
             return i;
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class SqlModel {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(delete);
-            ps.setObject(1,model.getId());
+            ps.setObject(1,model.account());
             int i = ps.executeUpdate();
             return i;
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class SqlModel {
                 JdbcModel model = models.get(i);
                 String value = JSON.toJSONString(model);//转json字段存储
                 ps.setObject(1,value);
-                ps.setObject(2,model.getId());
+                ps.setObject(2,model.account());
                 ps.addBatch();
             }
             ps.executeBatch();

@@ -6,4 +6,6 @@ package org.baize.model;
  * 描述：
  */
 public interface JdbcModel {
+    String account();
+    void setAccount(String account);
 }

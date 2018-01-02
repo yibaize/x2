@@ -116,10 +116,7 @@ public class SqlJiont {
             for(Field f:fields){
                 String value = "{}";
                 String name = f.getName();
-                if(name == "id") {
-                    continue;
-                }
-                if(map.containsKey(name) && name != "id");{
+                if(map.containsKey(name));{
                     if(f.getType() == String.class)
                         value = (String) f.get(model);
                     else
@@ -137,9 +134,10 @@ public class SqlJiont {
         try {
             List<JdbcModel> modelList = new ArrayList<>();
            if(type == 1)
-                ps.setObject(1,model.getAccount());
+                ps.setObject(1,model.account());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
+                String account = "";
                 Object o = model.getClass().newInstance();
                 Field[] fields = model.getClass().getDeclaredFields();
                 int id = -1;
@@ -147,15 +145,15 @@ public class SqlJiont {
                     String s = "{}";
                     Field field = fields[i];
                     String fieldName = field.getName();
-                    if(fieldName.equals("id")){
-                        id = rs.getInt("id");
-                        setField(field,o,id);
+                    if(fieldName.equals("account")){
+                        account = rs.getString("account");
+                        continue;
                     }
                     if(map.containsKey(fieldName)){
                         s = rs.getString(fieldName);
                         if(field.getType() != String.class) {
                             JdbcModel m = JSON.parseObject(s, (Type) field.getType());
-                            m.setId(id);
+                            m.setAccount(account);
                             setField(field,o,m);
                         }else {
                             setField(field,o,s);
@@ -163,7 +161,7 @@ public class SqlJiont {
                     }
                 }
                 model = (JdbcModel) o;
-                model.setId(id);
+                model.setAccount(account);
                 modelList.add(model);
             }
             return modelList;

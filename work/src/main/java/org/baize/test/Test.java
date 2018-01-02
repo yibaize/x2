@@ -19,9 +19,10 @@ public class Test {
         test.setA(a);
         test.setB(b);
         test.setD(d);
+        test.setAccount("123456");
         JdbcModel model = null;
         long start = System.currentTimeMillis();
-        //template.inset(test);
+//        template.insert(test);
         test = (ModelTest) template.select(test);
         long end = System.currentTimeMillis();
         System.out.println(test);

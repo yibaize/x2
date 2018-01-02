@@ -47,7 +47,7 @@ public class Weath extends JdbcLogicModel {
     private void notifyx() {
         update();
         //通知自己
-        SessionManager.sendMessage(this.getId(), (short) 0, null);
+        SessionManager.sendMessage(this.account(), (short) 100, dto());
     }
 
     public WeathDto dto() {

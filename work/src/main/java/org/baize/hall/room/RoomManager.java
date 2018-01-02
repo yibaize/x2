@@ -2,8 +2,11 @@ package org.baize.hall.room;
 
 import org.baize.error.AppErrorCode;
 import org.baize.error.GenaryAppError;
+import org.baize.hall.niuniu.NiuNiuRoom;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RoomManager {
@@ -16,11 +19,14 @@ public class RoomManager {
     private final Map<Integer,Room> rooms;
     private RoomManager() {
         rooms = new HashMap<>();
+        rooms.put(2,new NiuNiuRoom());
     }
-
     public Room getRoomById(int roomId){
         if(!rooms.containsKey(roomId))
             new GenaryAppError(AppErrorCode.DATA_ERR);
         return rooms.get(roomId);
+    }
+    public List<Room> getAllRoom(){
+        return new ArrayList<>(rooms.values());
     }
 }

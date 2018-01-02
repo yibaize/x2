@@ -15,20 +15,12 @@ public class PlayerEntity extends JdbcLogicModel{
     private String account;
     private String name;
     private Weath weath;
-    @Override
-    public int getId() {
-        return id;
-    }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getAccount() {
+    public String account() {
         return account;
     }
-
+    @Override
     public void setAccount(String account) {
         this.account = account;
     }

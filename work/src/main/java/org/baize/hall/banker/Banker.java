@@ -1,6 +1,8 @@
 package org.baize.hall.banker;
 
+import org.baize.ProtostuffUtils;
 import org.baize.hall.room.LeaveRoomListener;
+import org.baize.manager.Response;
 import org.baize.player.PlayerOperation;
 
 import java.util.ArrayList;
@@ -47,5 +49,12 @@ public class Banker implements LeaveRoomListener{
         down(player);
         if(bankerUpList.contains(player))
             bankerUpList.remove(player);
+    }
+    public void bankerNotify(List<PlayerOperation> players){
+        byte[] buf = ProtostuffUtils.serializer(null);
+        Response response = new Response((short) 103,buf);
+        for(PlayerOperation p:players){
+            p.write(response);
+        }
     }
 }

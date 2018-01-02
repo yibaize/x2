@@ -7,9 +7,10 @@ import org.baize.model.JdbcModel;
  * 时间： 2017/12/25.
  * 描述：
  */
-public class A extends JdbcModel {
+public class A implements JdbcModel {
     private int i = 12;
     private int j = 782425;
+    private String account;
     public int getI() {
         return i;
     }
@@ -26,4 +27,14 @@ public class A extends JdbcModel {
         this.j = j;
     }
 
+
+    @Override
+    public String account() {
+        return account;
+    }
+
+    @Override
+    public void setAccount(String account) {
+        this.account = account;
+    }
 }
