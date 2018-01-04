@@ -53,7 +53,7 @@ public class Login extends OperateCommandAbstract {
                     int j = (int) (d * 64)+1;
                     name += NameDataTable.get(j).getName();
                 }
-                entity.setName(name);
+//                entity.setName(name);
                 entity.setAccount(account);
                 entity.setWeath(new Weath(dataTable.getGold(),dataTable.getDiamond()));
                 JdbcReceiver.getInstance().insert(entity);

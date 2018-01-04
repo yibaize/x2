@@ -8,6 +8,7 @@ package org.baize.core;
 public class QueryFactory {
     private static Query prototypeObj;  //原型对象
     static {
+
         try {
             Class c = Class.forName(DBManager.getConfig().getQueryClass());  ////加载指定的query类
             prototypeObj = (Query) c.newInstance();

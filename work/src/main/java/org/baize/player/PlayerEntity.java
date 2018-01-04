@@ -12,7 +12,7 @@ import org.baize.receiver.JdbcLogicModel;
 @TableName("user")
 public class PlayerEntity extends JdbcLogicModel{
     private String account;
-    private String name;
+    private PlayerInfo playerinfo;
     private Weath weath;
 
     @Override
@@ -24,12 +24,16 @@ public class PlayerEntity extends JdbcLogicModel{
         this.account = account;
     }
 
-    public String getName() {
-        return name;
+    public String getAccount() {
+        return account;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public PlayerInfo getPlayerinfo() {
+        return playerinfo;
+    }
+
+    public void setPlayerinfo(PlayerInfo playerinfo) {
+        this.playerinfo = playerinfo;
     }
 
     public Weath getWeath() {
@@ -43,7 +47,7 @@ public class PlayerEntity extends JdbcLogicModel{
     public PlayerEntityDto selfDto(){
         PlayerEntityDto dto = new PlayerEntityDto();
         dto.setAccount(account);
-        dto.setName(name);
+        dto.setName(playerinfo.getName());
         dto.setDiamond(weath.getDiamond());
         dto.setGold(weath.getGold());
         return dto;

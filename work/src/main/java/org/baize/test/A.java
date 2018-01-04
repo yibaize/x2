@@ -1,5 +1,6 @@
 package org.baize.test;
 
+import org.baize.annotations.TableName;
 import org.baize.model.JdbcModel;
 
 /**

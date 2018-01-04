@@ -45,12 +45,21 @@ public class Weath extends JdbcLogicModel {
     }
 
     private void notifyx() {
-        update();
         //通知自己
         SessionManager.sendMessage(this.account(), (short) 100, dto());
     }
 
     public WeathDto dto() {
         return new WeathDto(gold, diamond);
+    }
+
+    @Override
+    public String account() {
+        return null;
+    }
+
+    @Override
+    public void setAccount(String account) {
+
     }
 }

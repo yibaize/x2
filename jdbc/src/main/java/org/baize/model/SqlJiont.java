@@ -171,16 +171,16 @@ public class SqlJiont {
         return null;
     }
     private void setField(Field field,Object o,Object s){
-        try {
-            field.setAccessible(true);
-            Field modifiersField = null;
-            modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            field.set(o,s);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            field.setAccessible(true);
+//            Field modifiersField = null;
+//            modifiersField = Field.class.getDeclaredField("modifiers");
+//            modifiersField.setAccessible(true);
+//            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+//            field.set(o,s);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
     public String oneField(Class<?> clazz){
         StringBuffer sb = new StringBuffer();

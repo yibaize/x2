@@ -38,7 +38,7 @@ public class NiuNiuRoom extends Room{
         List<PlayerOperation> bankerList = banker.getBankerUpList();
         List<String> name = new ArrayList<>(bankerList.size());
         for (PlayerOperation p:bankerList){
-            name.add(p.entity().getName());
+//            name.add(p.entity().getName());
         }
         dto.setBanker(banker.getBanker().entity().otherDto());
         dto.setBankerUpNamelList(name);

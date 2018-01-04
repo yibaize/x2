@@ -61,9 +61,7 @@ public abstract class Query implements Cloneable{
             //给sql设参
             JDBCUtils.handleParams(ps, params);
             System.out.println(ps);
-
             count  = ps.executeUpdate();
-
         } catch (Exception e) {
             e.printStackTrace();
         }finally{
@@ -240,7 +238,20 @@ public abstract class Query implements Cloneable{
         return queryUniqueRow(sql, clazz, new Object[]{id});
     }
 
-
+    /**
+     * 查找所有
+     * @param clazz
+     * @param id
+     * @return
+     */
+    public List queryAll(Class clazz,Object id){
+        //select * from emp where id=?   //delete from emp where id>?
+        TableInfo tableInfo = TableContext.poClassTableMap.get(clazz);
+        //获得主键
+        ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
+        String sql = "SELECT * FROM "+tableInfo.getTname()+" WHERE "+onlyPriKey.getName()+">? ";
+        return queryRows(sql, clazz, new Object[]{id});
+    }
     /**
      * 查询返回一个值(一行一列)，并将该值返回
      * @param sql 查询语句

@@ -51,5 +51,10 @@
             <artifactId>net</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.baize</groupId>
+            <artifactId>SORM</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

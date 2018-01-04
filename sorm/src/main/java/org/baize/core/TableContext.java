@@ -62,7 +62,7 @@ public class TableContext {
             e.printStackTrace();
         }
         //更新类结构
-        //updateJavaPOField();
+//        updateJavaPOField();
     }
     public static void updateJavaPOField(){
         Map<String,TableInfo> map = TableContext .tables;
