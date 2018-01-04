@@ -10,21 +10,12 @@ import org.baize.message.IProtostuff;
  */
 @Protostuff
 public class PlayerEntityDto implements IProtostuff{
-    private int id;
     private String account;
     private String name;
     private long gold;
     private long diamond;
 
     public PlayerEntityDto() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getAccount() {

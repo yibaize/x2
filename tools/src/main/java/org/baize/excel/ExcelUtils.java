@@ -41,6 +41,10 @@ public class ExcelUtils {
             ClassPathExcelContext(entry.getValue(),entry.getKey());
         }
     }
+
+    public static void main(String[] args) {
+        init("excel");
+    }
     /**
      * 解析ecxel表
      */

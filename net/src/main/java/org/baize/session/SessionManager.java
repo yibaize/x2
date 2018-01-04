@@ -4,6 +4,7 @@ import org.baize.manager.Response;
 import org.baize.message.IProtostuff;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,10 +80,14 @@ public class SessionManager {
     }
     /**通知所有在线玩家除了自己*/
     public static void notifyAllx(String playerId,short id,byte[] buf){
-        Response response = new Response();
+        Response response = new Response(id,buf);
         for (Map.Entry<String,ISession> e: SessionManager.map().entrySet()){
             if(e.getKey().equals(playerId))
                 e.getValue().write(response);
         }
+    }
+    public static void notifyxRoomPlayer(ISession session,short id,byte[] buf){
+        Response response = new Response(id,buf);
+        session.write(response);
     }
 }

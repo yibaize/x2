@@ -11,7 +11,6 @@ import org.baize.receiver.JdbcLogicModel;
  */
 @TableName("user")
 public class PlayerEntity extends JdbcLogicModel{
-    private int id;
     private String account;
     private String name;
     private Weath weath;
@@ -43,7 +42,6 @@ public class PlayerEntity extends JdbcLogicModel{
 
     public PlayerEntityDto selfDto(){
         PlayerEntityDto dto = new PlayerEntityDto();
-        dto.setId(id);
         dto.setAccount(account);
         dto.setName(name);
         dto.setDiamond(weath.getDiamond());

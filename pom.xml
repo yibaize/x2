@@ -10,6 +10,7 @@
     <module>net</module>
     <module>tools</module>
     <module>work</module>
+      <module>SORM</module>
   </modules>
   <packaging>pom</packaging>
 

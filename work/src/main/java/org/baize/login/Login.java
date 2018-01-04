@@ -4,8 +4,10 @@ import org.baize.assemblybean.annon.Protocol;
 import org.baize.assemblybean.service.SelectAnnotationClass;
 import org.baize.error.AppErrorCode;
 import org.baize.error.GenaryAppError;
+import org.baize.excel.StaticConfigMessage;
 import org.baize.hall.room.Room;
 import org.baize.hall.room.RoomManager;
+import org.baize.manager.Response;
 import org.baize.message.IProtostuff;
 import org.baize.player.PlayerDataTable;
 import org.baize.player.PlayerEntity;
@@ -45,6 +47,13 @@ public class Login extends OperateCommandAbstract {
             if (entity == null) {
                 //注册
                 PlayerDataTable dataTable = PlayerDataTable.get(1);
+                String name = "";
+                for(int i = 1;i<=3;i++) {
+                    double d = Math.random();
+                    int j = (int) (d * 64)+1;
+                    name += NameDataTable.get(j).getName();
+                }
+                entity.setName(name);
                 entity.setAccount(account);
                 entity.setWeath(new Weath(dataTable.getGold(),dataTable.getDiamond()));
                 JdbcReceiver.getInstance().insert(entity);
@@ -68,6 +77,7 @@ public class Login extends OperateCommandAbstract {
     }
 
     public static void main(String[] args) {
-        SelectAnnotationClass.getIocClazz("org.baize");
+        //SelectAnnotationClass.getIocClazz("org.baize");
+
     }
 }

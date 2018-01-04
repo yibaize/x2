@@ -6,6 +6,7 @@ import org.baize.hall.operation.GamblingParty;
 import org.baize.hall.operation.GamblingPartyDto;
 import org.baize.manager.Response;
 import org.baize.player.PlayerOperation;
+import org.baize.session.SessionManager;
 
 import java.util.Map;
 
@@ -62,10 +63,22 @@ public abstract class Room implements LeaveRoomListener{
     }
     public RoomInfoDto into(PlayerOperation player){
         playerMap.put(player.getAccount(),player);
+        Response response = new Response((short)102,null);
+        for(Map.Entry<String,PlayerOperation> e:playerMap.entrySet()){
+            if(player.equals(e.getValue()))
+                continue;
+            e.getValue().write(response);
+        }
         return null;
     }
     public void leaveRoom(PlayerOperation player){
         playerMap.remove(player.getAccount(),player);
+        Response response = new Response((short)102,null);
+        for(Map.Entry<String,PlayerOperation> e:playerMap.entrySet()){
+            if(player.equals(e.getValue()))
+                continue;
+            e.getValue().write(response);
+        }
     }
     public int online(){
         return playerMap == null ? 0 : playerMap.size();
