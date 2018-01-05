@@ -42,15 +42,16 @@ public final class GameServer {
                     });
             //绑定端口
             ChannelFuture f = b.bind(PORT).sync();
-           // LoggerUtils.getLogicLog().error("---------------服务器启动成功------------------");
+            System.out.println("---------------服务器启动成功------------------");
             f.channel().closeFuture().sync();//等待服务端监听关闭
         }catch (Exception e){
-            //LoggerUtils.getLogicLog().error("---------------服务器启动失败------------------",e);
+            e.printStackTrace();
+            System.out.println("---------------服务器启动失败------------------");
         }finally {
             //优雅退出线程
             BOSS_GROUP.shutdownGracefully();
             WORKER_GROUP.shutdownGracefully();
-           // LoggerUtils.getLogicLog().error("---------------服务器关闭------------------");
+            System.out.println("---------------服务器关闭------------------");
         }
     }
 }

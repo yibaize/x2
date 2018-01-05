@@ -1,10 +1,16 @@
 package org.baize.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.baize.LoggerUtils;
 import org.baize.StringUtils;
+import org.baize.excel.CheckType;
+import org.baize.excel.DataTableMessage;
+import org.baize.excel.StaticConfigMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +49,7 @@ public class ExcelUtils {
     }
 
     public static void main(String[] args) {
-        init("excel");
+//        init("excel");
     }
     /**
      * 解析ecxel表
@@ -136,10 +142,10 @@ public class ExcelUtils {
                         valueObj = arrs(clazz,beanObj,e.getValue(),e.getValue());
                     }
                     if(valueObj == null)
-                        LoggerUtils.getLogicLog().error("excel表在反射初始化"+clazz+"类时出现异常,没有"+field+"的"+valueObj+"这个类型");
+                        LoggerUtils.getLogicLog().debug("excel表在反射初始化"+clazz+"类时出现异常,没有"+field+"的"+valueObj+"这个类型");
                     field.set(beanObj,valueObj);
                 }catch (Exception ex){
-                    LoggerUtils.getLogicLog().error("excel表在反射初始化"+clazz+"类时出现异常",ex);
+                    LoggerUtils.getLogicLog().debug("excel表在反射初始化"+clazz+"类时出现异常",ex);
                 }
             }
             if(beanObj instanceof DataTableMessage) {

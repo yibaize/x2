@@ -61,7 +61,7 @@ public class PlayerEntity implements JdbcModel{
         PlayerInfo info = new PlayerInfo();
         StringBuilder sb = new StringBuilder();
         NameDataTable dataTable = NameDataTable.get(id());
-        sb.append(dataTable.getGener());
+        sb.append(dataTable.getGender());
         dataTable = NameDataTable.get(id());
         sb.append(dataTable.getSymbol());
         dataTable = NameDataTable.get(id());

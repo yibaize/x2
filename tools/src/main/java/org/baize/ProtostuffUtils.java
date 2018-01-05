@@ -58,6 +58,7 @@ public class ProtostuffUtils {
             ProtostuffIOUtil.mergeFrom(data, obj, schema);
             return obj;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

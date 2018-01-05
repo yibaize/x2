@@ -28,6 +28,7 @@ public class NetServer implements IRepeater {
             IProtostuff ptf = msg.execute();
             msg.broadcast();
         }catch (Exception e){
+            System.out.println("数据接收异常...");
         }
     }
 }

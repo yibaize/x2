@@ -3,6 +3,7 @@ package org.baize.manager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.baize.ProtostuffUtils;
 
 import java.util.List;
 
@@ -51,8 +52,8 @@ public class RequestDecoderManager extends ByteToMessageDecoder {
             byte[] data = new byte[length];
             buffer.readBytes(data);
             Msg msg = null;
-//            if(data.length > 0)
-//                msg = ProtostuffUtils.deserializer(data,Msg.class);
+            if(data.length > 0)
+                msg = ProtostuffUtils.deserializer(data,Msg.class);
             Request message = new Request(id,msg);
             out.add(message);
         }

@@ -30,13 +30,13 @@ public class Login extends OperateCommandAbstract {
     @Override
     public IProtostuff execute() {
         ISession session = getSession();
+        PlayerOperation operation = (PlayerOperation) session.getAttachment();
         PlayerEntity entity = null;
-        if(session != null){
+        if(operation != null){
             //回话已经登陆 抛异常
             new GenaryAppError(AppErrorCode.LOGIN_ERR);
         }else {
-            entity = new PlayerEntity();
-            entity.setAccount(account);
+            entity = (PlayerEntity) JDBC_MAP.select(account);
             //数据库查找
 //            entity = (PlayerEntity) JdbcReceiver.getInstance().select(entity);
             //数据库还没有
@@ -54,7 +54,7 @@ public class Login extends OperateCommandAbstract {
         }
         Room room = RoomManager.getInstance().getRoomById(1);
         //加入在线玩家会话
-        PlayerOperation operation = new PlayerOperation(entity,session,room);
+        operation = new PlayerOperation(entity,session,room);
         if(SessionManager.putSession(account,session)){
             session.setAttachment(operation);
         }

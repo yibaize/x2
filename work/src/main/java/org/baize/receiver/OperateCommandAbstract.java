@@ -3,6 +3,7 @@ package org.baize.receiver;
 
 import org.baize.manager.Response;
 import org.baize.message.IProtostuff;
+import org.baize.player.PlayerEntity;
 import org.baize.session.ISession;
 
 /**
@@ -11,6 +12,7 @@ import org.baize.session.ISession;
  * 描述：
  */
 public abstract class OperateCommandAbstract implements IOperationCommand{
+    public static final JDBCMap JDBC_MAP = new JDBCMap(new PlayerEntity());
     private short cmdId;
     private ISession session;
 

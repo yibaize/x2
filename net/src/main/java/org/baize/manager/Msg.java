@@ -10,6 +10,9 @@ import org.baize.message.IProtostuff;
 public class Msg implements IProtostuff {
     private String msg;
 
+    public Msg() {
+    }
+
     public Msg(String msg) {
         this.msg = msg;
     }

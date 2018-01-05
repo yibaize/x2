@@ -3,6 +3,7 @@ package org.baize.hall.room;
 import org.baize.error.AppErrorCode;
 import org.baize.error.GenaryAppError;
 import org.baize.hall.niuniu.NiuNiuRoom;
+import org.baize.login.MainRoom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class RoomManager {
     private RoomManager() {
         rooms = new HashMap<>();
         rooms.put(2,new NiuNiuRoom());
+        rooms.put(1,new MainRoom());
     }
     public Room getRoomById(int roomId){
         if(!rooms.containsKey(roomId))

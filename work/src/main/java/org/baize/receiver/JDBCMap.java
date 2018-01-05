@@ -63,6 +63,31 @@ public class JDBCMap {
         setObj(o,p);
         query.insert(p);
     }
+    public Object select(String account){
+        Player p = (Player) query.queryById(Player.class,account);
+        PlayerEntity e = new PlayerEntity();
+        e.setAccount(p.getAccount());
+        e.setWeath(JSON.parseObject(p.getWeath(),Weath.class));
+        e.setPlayerinfo(JSON.parseObject(p.getPlayerinfo(),PlayerInfo.class));
+        return e;
+    }
+    private void change(Object o,PlayerEntity e){
+        Field[] fs = o.getClass().getDeclaredFields();
+        for (int i = 0;i<fs.length;i++){
+            Field f = fs[i];
+            Object value = null;
+            try {
+                if(f.getType().isPrimitive()){
+                    value = f.get(o);
+                }else {
+                    value = JSON.parseObject((String) f.get(o));
+                }
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+            setField(f,e,value);
+        }
+    }
     private void setObj(Object o,Player p){
         Field[] fs = o.getClass().getDeclaredFields();
         for (int i = 0;i<fs.length;i++){
