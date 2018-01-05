@@ -27,13 +27,8 @@ public class RobotManager {
     private RobotManager() {
         robot = new ArrayList<>();
         rooms = RoomManager.getInstance().getAllRoom();
-        for (Room room:rooms){
-            GamblingParty game = room.getGamblingParty();
-            if(game != null){
-                robot.add(game);
-            }
-        }
         this.timerTask = Executors.newScheduledThreadPool(1);
+        executor();
     }
     private void executor(){
         timerTask.scheduleAtFixedRate(runnable,0,1, TimeUnit.SECONDS);
@@ -41,14 +36,21 @@ public class RobotManager {
     private int timer;
     private Runnable runnable = () -> {
         timer++;
-        if(timer == 5){
+        if(timer == 1){
             for (GamblingParty g:robot){
-                g.deal();
+                g.startBatlle();
             }
-        }
-        if(timer == 10){
-            for (Room r:rooms){
-                r.battling();
+        }else if(timer == 10){
+            for (GamblingParty g:robot){
+                g.shuffle();
+            }
+        }else if(timer == 15){
+            for (GamblingParty g:robot){
+                g.end();
+            }
+        } else if(timer == 20){
+            for (GamblingParty g:robot){
+                g.endBattle();
             }
         }
     };

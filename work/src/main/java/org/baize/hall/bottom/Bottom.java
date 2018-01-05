@@ -45,6 +45,7 @@ public class Bottom implements LeaveRoomListener{
         return playerMap.getOrDefault(player,0L);
     }
     public void end(){
+        //玩家结算
         for(Map.Entry<PlayerOperation,Long> e:playerMap.entrySet()){
             e.getKey().entity().getWeath().insertGold(e.getValue());
         }

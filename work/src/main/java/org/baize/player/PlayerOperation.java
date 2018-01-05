@@ -18,7 +18,7 @@ public class PlayerOperation {
         this.entity = entity;
         this.session = session;
         this.room = room;
-        this.account = entity.account();
+        this.account = entity.getAccount();
     }
 
     public String getAccount() {

@@ -12,20 +12,15 @@ import org.baize.player.PlayerOperation;
  */
 public class MainRoom extends Room{
     public MainRoom() {
-        super(1, new GamblingParty(0,0));
+        super(1);
     }
 
     @Override
     public void leave(PlayerOperation player) {
-        leaveRoom(player);
     }
 
     @Override
-    public void bottom(PlayerOperation player, int position, long count) {
-    }
-
-    @Override
-    public void end() {
+    public void intoRoom(PlayerOperation playerOperation) {
 
     }
 }

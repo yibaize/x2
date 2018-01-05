@@ -19,11 +19,8 @@ public abstract class Room implements LeaveRoomListener{
     private int roomId;
     private boolean isStartBattle;
     private long endTime;
-    private Map<String,PlayerOperation> playerMap;
-    private final GamblingParty gamblingParty;
-    public Room(int roomId,GamblingParty gamblingParty) {
+    public Room(int roomId) {
         this.roomId = roomId;
-        this.gamblingParty = gamblingParty;
     }
 
     public int getRoomId() {
@@ -32,10 +29,6 @@ public abstract class Room implements LeaveRoomListener{
 
     public boolean isStartBattle() {
         return isStartBattle;
-    }
-
-    public GamblingParty getGamblingParty() {
-        return gamblingParty;
     }
 
     public final boolean startBattle(){
@@ -49,47 +42,13 @@ public abstract class Room implements LeaveRoomListener{
         return result;
     }
 
-    public final void battling(){
-        result = gamblingParty.comperaToCard();
-        result.setEndTime((int) getEndTime()/1000);
-        Response response = new Response((short) 106, ProtostuffUtils.serializer(result));
-        for(Map.Entry<String,PlayerOperation> e:playerMap.entrySet()){
-            e.getValue().write(response);
-        }
-    }
     public final boolean endBattle(){
         isStartBattle = false;
+        endTime = 0;
         return false;
     }
-    public RoomInfoDto into(PlayerOperation player){
-        playerMap.put(player.getAccount(),player);
-        Response response = new Response((short)102,null);
-        for(Map.Entry<String,PlayerOperation> e:playerMap.entrySet()){
-            if(player.equals(e.getValue()))
-                continue;
-            e.getValue().write(response);
-        }
-        return null;
-    }
-    public void leaveRoom(PlayerOperation player){
-        playerMap.remove(player.getAccount(),player);
-        Response response = new Response((short)102,null);
-        for(Map.Entry<String,PlayerOperation> e:playerMap.entrySet()){
-            if(player.equals(e.getValue()))
-                continue;
-            e.getValue().write(response);
-        }
-    }
-    public int online(){
-        return playerMap == null ? 0 : playerMap.size();
-    }
-
+    public abstract void intoRoom(PlayerOperation playerOperation);
     public long getEndTime() {
         return endTime - System.currentTimeMillis();
     }
-    public Map<String,PlayerOperation> players(){
-        return playerMap;
-    }
-    public abstract void bottom(PlayerOperation player, int position, long count);
-    public abstract void end();
 }

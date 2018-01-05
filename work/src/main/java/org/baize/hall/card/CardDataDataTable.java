@@ -15,19 +15,16 @@ import java.util.Map;
  * 描述：
  */
 public class CardDataDataTable implements DataTableMessage,Comparable<CardDataDataTable> {
-    private int id;
-    private int cardFace;
-    private static List<CardDataDataTable> cards;
-    public CardDataDataTable(int id, int cardFace) {
-        this.id = id;
-        this.cardFace = cardFace;
+    private final int id;
+    private final int cardFace;
+    public CardDataDataTable() {
+        this.id = 0;
+        this.cardFace = 0;
     }
     public static CardDataDataTable get(int id){
         return StaticConfigMessage.getInstance().get(CardDataDataTable.class,id);
     }
-    public static List<CardDataDataTable> cardList(){
-        return cards;
-    }
+
     public int getId() {
         return id;
     }
@@ -48,10 +45,6 @@ public class CardDataDataTable implements DataTableMessage,Comparable<CardDataDa
 
     @Override
     public void AfterInit() {
-        Map<Serializable,Object> card = StaticConfigMessage.getInstance().getMap(CardDataDataTable.class);
-        cards = new ArrayList<>(card.size());
-        for (Map.Entry<Serializable,Object> e:card.entrySet()){
-            cards.add((CardDataDataTable) e.getValue());
-        }
+
     }
 }

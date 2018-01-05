@@ -21,16 +21,7 @@ public class ChangeScenes extends OperateCommandAbstract {
 
     @Override
     public IProtostuff execute() {
-        PlayerOperation player = (PlayerOperation) getSession().getAttachment();
-        Room oldRoom = player.room();
-        if(oldRoom != null)
-            oldRoom.leaveRoom(player);
-        Room newRoom = RoomManager.getInstance().getRoomById(roomId);
-        IProtostuff pro = null;
-        if(newRoom != null) {
-            player.setRoom(newRoom);
-            pro = newRoom.into(player);
-        }
-        return pro;
+
+        return null;
     }
 }

@@ -1,15 +1,20 @@
 package org.baize.player.weath;
 
-import org.baize.receiver.JdbcLogicModel;
+import org.baize.model.JdbcModel;
 import org.baize.session.SessionManager;
 
-public class Weath extends JdbcLogicModel {
+public class Weath implements JdbcModel {
+    private String account;
     private long gold;
     private long diamond;
 
-    public Weath(long gold, long diamond) {
+    public Weath(String account, long gold, long diamond) {
+        this.account = account;
         this.gold = gold;
         this.diamond = diamond;
+    }
+
+    public Weath() {
     }
 
     public long getGold() {
@@ -46,20 +51,11 @@ public class Weath extends JdbcLogicModel {
 
     private void notifyx() {
         //通知自己
-        SessionManager.sendMessage(this.account(), (short) 100, dto());
+        SessionManager.sendMessage(account, (short) 100, dto());
     }
 
     public WeathDto dto() {
         return new WeathDto(gold, diamond);
     }
 
-    @Override
-    public String account() {
-        return null;
-    }
-
-    @Override
-    public void setAccount(String account) {
-
-    }
 }

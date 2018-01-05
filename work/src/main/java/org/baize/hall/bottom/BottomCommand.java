@@ -1,6 +1,7 @@
 package org.baize.hall.bottom;
 
 import org.baize.assemblybean.annon.Protocol;
+import org.baize.hall.niuniu.NiuNiuRoom;
 import org.baize.hall.room.Room;
 import org.baize.message.IProtostuff;
 import org.baize.player.PlayerOperation;
@@ -24,8 +25,8 @@ public class BottomCommand extends OperateCommandAbstract {
     @Override
     public IProtostuff execute() {
         PlayerOperation player = (PlayerOperation) getSession().getAttachment();
-        Room room = player.room();
-        room.bottom(player,position,count);
-        return null;
+        NiuNiuRoom room = (NiuNiuRoom) player.room();
+        BottomDto dto = room.getGamblingParty().bottom(player,position,count);
+        return dto;
     }
 }

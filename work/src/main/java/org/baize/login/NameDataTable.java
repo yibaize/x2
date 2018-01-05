@@ -12,9 +12,13 @@ import org.baize.excel.StaticConfigMessage;
 public class NameDataTable implements DataTableMessage{
     private final int id;
     private final String name;
+    private final String gener;
+    private final String symbol;
     public NameDataTable(){
         this.id = 0;
         this.name = "";
+        this.gener = "";
+        this.symbol = "";
     }
     public static NameDataTable get(int id){
         return StaticConfigMessage.getInstance().get(NameDataTable.class,id);
@@ -26,6 +30,14 @@ public class NameDataTable implements DataTableMessage{
 
     public String getName() {
         return name;
+    }
+
+    public String getGener() {
+        return gener;
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 
     @Override

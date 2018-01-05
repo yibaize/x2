@@ -4,9 +4,13 @@ import org.baize.hall.bottom.Bottom;
 import org.baize.hall.bottom.BottomDto;
 import org.baize.hall.card.CardDataDataTable;
 import org.baize.hall.card.CardDto;
+import org.baize.hall.card.CardManager;
 import org.baize.hall.card.HoldCard;
 import org.baize.hall.niuniu.NiuNiuCompera;
+import org.baize.hall.niuniu.NiuNiuRoom;
+import org.baize.hall.niuniu.PlayerSet;
 import org.baize.hall.room.LeaveRoomListener;
+import org.baize.hall.room.Room;
 import org.baize.player.PlayerOperation;
 
 import java.util.*;
@@ -18,72 +22,48 @@ import java.util.concurrent.atomic.AtomicLong;
  * 描述：
  */
 public class GamblingParty implements LeaveRoomListener{
+    private static final Object LOCK = new Object();
+    private final Set<LeaveRoomListener> leaveRoomListeners = new HashSet<>();
+    private final CardManager cardManager;
     private HoldCard bankerCard;
     private List<HoldCard> otherCard = null;
     private Map<Integer,Bottom> bottomPosition;
-    private final Set<LeaveRoomListener> leaveRoomListeners = new HashSet<>();
     private AtomicLong allMoney = new AtomicLong(0);
-    private int positionCount;
-    private int cardCount;
-    public GamblingParty(int positionCount, int cardCount) {
-        this.positionCount = positionCount;
-        this.cardCount = cardCount;
+    private NiuNiuRoom room;
+    public GamblingParty(NiuNiuRoom room,int positionCount, int cardCount) {
+        this.room = room;
+        cardManager = new CardManager(positionCount,cardCount);
     }
 
-    public List<HoldCard> getOtherCard() {
-        return otherCard;
-    }
-    public HoldCard getBankerCard() {
-        return bankerCard;
-    }
-    private List<CardDataDataTable> shuffle(){
-        List<CardDataDataTable> cardList = new ArrayList<>(CardDataDataTable.cardList());
-        Collections.shuffle(cardList);
-        return cardList;
-    }
-
-    public void deal(){
-        List<CardDataDataTable> cardList = shuffle();
-        otherCard = new ArrayList<>(positionCount - 1);
-        for(int i = 0;i<positionCount;i++){
-            CardDataDataTable[] card = new CardDataDataTable[cardCount];
-            for(int j = 0;j<cardCount;j++){
-                card[j] = cardList.get((i*cardCount)+j);
-            }
-            HoldCard holdCard = new HoldCard(i+1,card);
-            if(i == 0)
-                bankerCard = holdCard;
-            else
-                otherCard.add(holdCard);
-        }
-    }
     public BottomDto bottom(PlayerOperation player,int position,long count){
-        if(bottomPosition == null){
-            bottomPosition = new HashMap<>();
-            Bottom b = new Bottom();
-            b.bottom(player,count);
-            bottomPosition.put(position,b);
-            leaveRoomListeners.add(b);
-        }else {
-            if(!bottomPosition.containsKey(position)){
+        synchronized(LOCK) {
+            if (bottomPosition == null) {
+                bottomPosition = new HashMap<>();
                 Bottom b = new Bottom();
-                b.bottom(player,count);
-                bottomPosition.put(position,b);
+                b.bottom(player, count);
+                bottomPosition.put(position, b);
                 leaveRoomListeners.add(b);
-            }else {
-                Bottom b = bottomPosition.get(position);
-                b.bottom(player,count);
+            } else {
+                if (!bottomPosition.containsKey(position)) {
+                    Bottom b = new Bottom();
+                    b.bottom(player, count);
+                    bottomPosition.put(position, b);
+                    leaveRoomListeners.add(b);
+                } else {
+                    Bottom b = bottomPosition.get(position);
+                    b.bottom(player, count);
+                }
             }
+            allMoney.addAndGet(count);
+            Map<Integer, Long> self = new HashMap<>();
+            Map<Integer, Long> other = new HashMap<>();
+            for (Map.Entry<Integer, Bottom> e : bottomPosition.entrySet()) {
+                self.put(e.getKey(), e.getValue().getBotoomMoney(player));
+                other.put(e.getKey(), e.getValue().getAllMoney());
+            }
+            BottomDto dto = new BottomDto(self, other);
+            return dto;
         }
-        allMoney.addAndGet(count);
-        Map<Integer,Long> self = new HashMap<>();
-        Map<Integer,Long> other = new HashMap<>();
-        for(Map.Entry<Integer,Bottom> e:bottomPosition.entrySet()){
-            self.put(e.getKey(),e.getValue().getBotoomMoney(player));
-            other.put(e.getKey(),e.getValue().getAllMoney());
-        }
-        BottomDto dto = new BottomDto(self,other);
-        return dto;
     }
     public long getAllMoney(){
         return allMoney.get();
@@ -100,10 +80,19 @@ public class GamblingParty implements LeaveRoomListener{
     }
 
     /**
-     * 发牌，比牌，返回结果
+     * 发牌
+     */
+    public void shuffle(){
+        List<HoldCard> h = cardManager.deal();
+        bankerCard = h.remove(0);
+        otherCard = h;
+
+    }
+    /**
+     * 比牌
      * @return
      */
-    public GamblingPartyDto comperaToCard(){
+    private GamblingPartyDto comperaToCard(){
         int bankerReslt = NiuNiuCompera.check(bankerCard.cardFace());
         CardDto bankerDto = new CardDto(0,false,bankerReslt,bankerCard.cardId());
         List<CardDto> c = new ArrayList<>(otherCard.size());
@@ -116,10 +105,40 @@ public class GamblingParty implements LeaveRoomListener{
         }
         return new GamblingPartyDto(bankerDto,c);
     }
-    public long end(int position){
+
+    /**
+     * 返回结果
+     */
+    public void end(){
+        GamblingPartyDto result = comperaToCard();
+        List<CardDto> c = result.getOtherDto();
+        for (CardDto d:c){
+            if(d.isResult())
+                end(d.getPosition());//玩家结算
+        }
+        room.getPlayerSet().getNowBanker().getWeath().insertGold(getAllMoney());//庄家结算
+        result.setEndTime((int) (room.getEndTime()/1000));
+        result.setAllMoney(getAllMoney());
+        room.endBattle();
+        setAllMoney();
+        room.getPlayerSet().notityInto(106,result);//通知结算
+    }
+    private long end(int position){
         Bottom bottom = bottomPosition.getOrDefault(position,null);
+        long bankerMoney = getAllMoney();
+        bankerMoney -= bottom.getAllMoney();
+        allMoney.set(bankerMoney);
         if(bottom != null)
             bottom.end();
         return bottom.getAllMoney();
+    }
+    public void startBatlle(){
+        room.endBattle();
+        StartBattleInfoDto dto = new StartBattleInfoDto((int) room.getEndTime()/1000);
+        room.getPlayerSet().notityInto(106,dto);//通知本场结束
+    }
+    public void endBattle(){
+        room.getPlayerSet().notityInto(105,null);//通知本场结束
+        room.endBattle();
     }
 }

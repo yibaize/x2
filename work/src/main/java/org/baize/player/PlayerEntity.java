@@ -1,31 +1,25 @@
 package org.baize.player;
 
-import org.baize.annotations.TableName;
+import org.baize.login.NameDataTable;
+import org.baize.model.JdbcModel;
 import org.baize.player.weath.Weath;
-import org.baize.receiver.JdbcLogicModel;
 
 /**
  * 作者： 白泽
  * 时间： 2017/12/28.
  * 描述：
  */
-@TableName("user")
-public class PlayerEntity extends JdbcLogicModel{
+public class PlayerEntity implements JdbcModel{
+    public static final String BANKER_ID = "sys_10x30x60x19x78";
     private String account;
     private PlayerInfo playerinfo;
     private Weath weath;
-
-    @Override
-    public String account() {
-        return account;
-    }
-    @Override
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
     public String getAccount() {
         return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public PlayerInfo getPlayerinfo() {
@@ -60,5 +54,33 @@ public class PlayerEntity extends JdbcLogicModel{
 //        dto.setDiamond(weath.getDiamond());
 //        dto.setGold(weath.getGold());
         return null;
+    }
+   public static PlayerEntity systemBanker(String account,Weath w){
+        PlayerEntity banker = new PlayerEntity();
+        banker.setAccount(account);
+        PlayerInfo info = new PlayerInfo();
+        StringBuilder sb = new StringBuilder();
+        NameDataTable dataTable = NameDataTable.get(id());
+        sb.append(dataTable.getGener());
+        dataTable = NameDataTable.get(id());
+        sb.append(dataTable.getSymbol());
+        dataTable = NameDataTable.get(id());
+        sb.append(dataTable.getName());
+        info.setName(sb.toString());
+        info.setHeadName("h_1");
+        banker.setPlayerinfo(info);
+        banker.setWeath(w);
+        return banker;
+   }
+   private static int id(){
+       double d = Math.random();
+       int j = (int) (d * 64)+1;
+       return j;
+   }
+
+    @Override
+    public boolean equals(Object obj) {
+       PlayerEntity e = (PlayerEntity) obj;
+        return account == e.getAccount();
     }
 }
