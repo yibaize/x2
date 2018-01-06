@@ -19,8 +19,17 @@ public abstract class Room implements LeaveRoomListener{
     private int roomId;
     private boolean isStartBattle;
     private long endTime;
+    private GamblingParty gamblingParty;
     public Room(int roomId) {
         this.roomId = roomId;
+    }
+
+    public GamblingParty getGamblingParty() {
+        return gamblingParty;
+    }
+
+    public void setGamblingParty(GamblingParty gamblingParty) {
+        this.gamblingParty = gamblingParty;
     }
 
     public int getRoomId() {

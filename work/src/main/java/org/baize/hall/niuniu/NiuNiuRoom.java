@@ -14,19 +14,15 @@ import java.util.List;
  */
 public class NiuNiuRoom extends Room{
     private NiuNiuPlayerSet playerSet;
-    private GamblingParty gamblingParty;
+
     public NiuNiuRoom() {
         super(2);
         playerSet = new NiuNiuPlayerSet(this);
-        gamblingParty = new GamblingParty(this,5,5);
+        setGamblingParty(new GamblingParty(this,5,5));
     }
 
     public NiuNiuPlayerSet getPlayerSet() {
         return playerSet;
-    }
-
-    public GamblingParty getGamblingParty() {
-        return gamblingParty;
     }
 
     public RoomInfoDto roomInfoDto(PlayerOperation player) {
@@ -46,7 +42,7 @@ public class NiuNiuRoom extends Room{
     @Override
     public void leave(PlayerOperation player) {
         playerSet.leave(player);
-        gamblingParty.leave(player);
+        getGamblingParty().leave(player);
     }
 
     @Override

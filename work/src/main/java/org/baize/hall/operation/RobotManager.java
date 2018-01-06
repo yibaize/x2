@@ -26,8 +26,12 @@ public class RobotManager {
         return instance;
     }
     private RobotManager() {
-        robot = new ArrayList<>();
         rooms = RoomManager.getInstance().getAllRoom();
+        robot = new ArrayList<>();
+        for(Room r:rooms){
+            if(r.getGamblingParty() != null)
+            robot.add(r.getGamblingParty());
+        }
         this.timerTask = Executors.newScheduledThreadPool(1);
         executor();
     }
@@ -39,12 +43,10 @@ public class RobotManager {
     private Runnable runnable = () -> {
         timer++;
         //下注同步
-        if(timer == 1){
-            for (GamblingParty g:robot){
-                g.notifyBottom();
-            }
+        for (GamblingParty g:robot){
+            g.notifyBottom();
         }
-        System.out.println(timer+":"+this.getClass());
+//        System.out.println(timer+":"+this.getClass());
         //开始新一局
         if(timer == 1){
             for (GamblingParty g:robot){

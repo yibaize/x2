@@ -3,9 +3,13 @@ package org.baize.manager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import org.baize.message.TcpHandler;
 import org.baize.session.ISession;
 import org.baize.session.SessionImpl;
+
+import javax.sound.midi.Soundbank;
 
 public class ServerHandlerManager extends SimpleChannelInboundHandler<Request>{
 
@@ -41,5 +45,29 @@ public class ServerHandlerManager extends SimpleChannelInboundHandler<Request>{
 		ISession session = new SessionImpl(channel);
 //		Request r = new Request((short) CommandCode.Out_line,new Msg(""));
 //		TcpHandler.messageRecieve(session,r);
+	}
+
+	/**
+	 * 心跳机制
+	 * @param ctx
+	 * @param evt
+	 * @throws Exception
+	 */
+	@Override
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+		if(evt instanceof IdleStateEvent){
+			IdleStateEvent e = (IdleStateEvent) evt;
+//			if(e.state().equals(IdleState.READER_IDLE)){
+//				System.out.println("---读空闲---");
+//				ctx.channel().close();
+//			}else if(e.state().equals(IdleState.WRITER_IDLE)){
+//				System.out.println("---写空闲----");
+//			}else
+			 if(e.state().equals(IdleState.ALL_IDLE)){
+				System.out.println("---读写空闲---");
+				 ctx.channel().close();
+//				ctx.channel().writeAndFlush("ping\r\n");
+			}
+		}
 	}
 }

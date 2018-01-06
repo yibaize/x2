@@ -11,9 +11,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.baize.manager.RequestDecoderManager;
 import org.baize.manager.ResponseEncoderManager;
 import org.baize.manager.ServerHandlerManager;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 作者： 白泽
@@ -37,6 +40,7 @@ public final class GameServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new ResponseEncoderManager());
                             ch.pipeline().addLast(new RequestDecoderManager());
+                            ch.pipeline().addLast(new IdleStateHandler(10,9,8, TimeUnit.SECONDS));
                             ch.pipeline().addLast(new ServerHandlerManager());
                         }
                     });

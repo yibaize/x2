@@ -15,12 +15,12 @@ public class App
 {
     public static void main( String[] args )
     {
-//        new NetServer();
-        SelectAnnotationClass.getIocClazz("org.baize");
-//        RobotManager.getInstance();
-//        QueryFactory.createQuery();
-//        ExcelUtils.init("excel");
-//        GameServer.start();
-//        System.out.println(Thread.currentThread().getContextClassLoader().getResourceAsStream("PlayerSqlMap.properties"));
+        new NetServer();
+//        SelectAnnotationClass.getIocClazz("org.baize");
+        RobotManager.getInstance();
+        QueryFactory.createQuery();
+        ExcelUtils.init("excel");
+        GameServer.start();
+        System.out.println(Thread.currentThread().getContextClassLoader().getResourceAsStream("PlayerSqlMap.properties"));
     }
 }
