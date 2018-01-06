@@ -17,23 +17,29 @@ import org.baize.hall.shop.data.ShopDataTable;
 public class ShopBuy extends OperateCommandAbstract {
     /**商品id*/
     private final int id;
+    /**数量*/
+    private final int count;
     /**购买编号，成功与否*/
     private final String buyCode;
 
-    public ShopBuy(int id, String buyCode) {
+    public ShopBuy(int id, int count, String buyCode) {
         this.id = id;
+        this.count = count;
         this.buyCode = buyCode;
     }
 
     @Override
     public IProtostuff execute() {
-        ShopDataTable dataTable = ShopDataTable.get(id);
-        if(dataTable == null)
+        try {
+            ShopDataTable dataTable = ShopDataTable.get(id);
+            long gold = dataTable.getGoodsNum()*count;
+            PlayerOperation operation = (PlayerOperation) getSession().getAttachment();
+            Weath weath = operation.entity().getWeath();
+            weath.insertGold(gold);
+        }catch (Exception e){
+            e.printStackTrace();
             new GenaryAppError(AppErrorCode.DATA_ERR);
-        long gold = dataTable.getGoodsNum();
-        PlayerOperation operation = (PlayerOperation) getSession().getAttachment();
-        Weath weath = operation.entity().getWeath();
-        weath.insertGold(gold);
+        }
         return null;
     }
 }

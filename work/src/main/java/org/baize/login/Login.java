@@ -38,15 +38,14 @@ public class Login extends OperateCommandAbstract {
         }else {
             entity = (PlayerEntity) JDBC_MAP.select(account);
             //数据库查找
-//            entity = (PlayerEntity) JdbcReceiver.getInstance().select(entity);
             //数据库还没有
             if (entity == null) {
                 //注册
                 PlayerDataTable dataTable = PlayerDataTable.get(1);
                 Weath w = new Weath(account,dataTable.getGold(), dataTable.getDiamond());
                 entity = PlayerEntity.systemBanker(account,w);
-
-//                JdbcReceiver.getInstance().insert(entity);
+                entity.setAccount(account);
+                JDBC_MAP.insert(entity);
             }
         }
         if(SessionManager.isOnlinePlayer(account)){
@@ -59,11 +58,6 @@ public class Login extends OperateCommandAbstract {
             session.setAttachment(operation);
         }
         return entity.selfDto();
-    }
-    private int id(){
-        double d = Math.random();
-        int j = (int) (d * 64)+1;
-        return j;
     }
     /**账号已经被登陆,踢老用户下线*/
     private void hasLogin(ISession session){

@@ -55,38 +55,26 @@ public class JDBCMap {
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
+            query.update(p,s);
         }
-        query.update(p,new String[]{"weath"});
     }
     public void insert(PlayerEntity o){
         Player p = new Player();
-        setObj(o,p);
+        System.out.println(o.getWeath());
+        p.setWeath(JSON.toJSONString(o.getWeath()));
+        p.setPlayerinfo(JSON.toJSONString(o.getPlayerinfo()));
+        p.setAccount(o.getAccount());
         query.insert(p);
     }
     public Object select(String account){
         Player p = (Player) query.queryById(Player.class,account);
+        if(p == null)
+            return null;
         PlayerEntity e = new PlayerEntity();
         e.setAccount(p.getAccount());
         e.setWeath(JSON.parseObject(p.getWeath(),Weath.class));
         e.setPlayerinfo(JSON.parseObject(p.getPlayerinfo(),PlayerInfo.class));
         return e;
-    }
-    private void change(Object o,PlayerEntity e){
-        Field[] fs = o.getClass().getDeclaredFields();
-        for (int i = 0;i<fs.length;i++){
-            Field f = fs[i];
-            Object value = null;
-            try {
-                if(f.getType().isPrimitive()){
-                    value = f.get(o);
-                }else {
-                    value = JSON.parseObject((String) f.get(o));
-                }
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-            }
-            setField(f,e,value);
-        }
     }
     private void setObj(Object o,Player p){
         Field[] fs = o.getClass().getDeclaredFields();

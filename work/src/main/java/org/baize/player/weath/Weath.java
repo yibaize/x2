@@ -33,6 +33,14 @@ public class Weath implements JdbcModel {
         this.diamond = diamond;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     private static final Object LOCK = new Object();
 
     public void insertGold(long count) {

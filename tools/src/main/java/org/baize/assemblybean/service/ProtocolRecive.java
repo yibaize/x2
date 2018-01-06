@@ -133,8 +133,8 @@ public class ProtocolRecive {
             sb.append("\t}\n");
         }
         sb.append("}");
-//        WriteFile.writeText("OperateCommandRecive.java",sb.toString(),"E:\\javaDemo\\model\\LogicModel\\src\\main\\java\\org\\baize\\receiver");
-//        WriteFile.writeText("CommandCode.java",sb1.toString(),"E:\\javaDemo\\model\\LogicModel\\src\\main\\java\\org\\baize\\receiver");
+        WriteFile.writeText("OperateCommandRecive.java",sb.toString(),"E:\\javaDemo\\x2\\work\\src\\main\\java\\org\\baize\\receiver");
+        WriteFile.writeText("CommandCode.java",sb1.toString(),"E:\\javaDemo\\x2\\work\\src\\main\\java\\org\\baize\\receiver");
         WriteFile.writeText("CommandCode.cs",sb2.toString(),"E:\\cs");
     }
 }

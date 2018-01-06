@@ -1,5 +1,6 @@
 package org.baize.session;
 
+import org.baize.ProtostuffUtils;
 import org.baize.manager.Response;
 import org.baize.message.IProtostuff;
 
@@ -63,11 +64,10 @@ public class SessionManager {
         }
     }
     private static Response msg(short id, IProtostuff msg){
-        Response response = new Response();
-        response.setId(id);
         byte[] buf = null;
-//        if(msg != null)
-//            buf = ProtostuffUtils.serializer(msg);
+        if(msg != null)
+            buf = ProtostuffUtils.serializer(msg);
+        Response response = new Response(id,buf);
         response.setData(buf);
         return response;
     }

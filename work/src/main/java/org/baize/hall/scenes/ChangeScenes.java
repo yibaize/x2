@@ -11,7 +11,7 @@ import org.baize.receiver.OperateCommandAbstract;
  * 时间： 2017/12/29.
  * 描述：
  */
-@Protocol("4")
+@Protocol("3")
 public class ChangeScenes extends OperateCommandAbstract {
     private final int roomId;
 
@@ -21,7 +21,9 @@ public class ChangeScenes extends OperateCommandAbstract {
 
     @Override
     public IProtostuff execute() {
-
+        Room room = RoomManager.getInstance().getRoomById(roomId);
+        PlayerOperation p = (PlayerOperation) getSession().getAttachment();
+        p.setRoom(room);
         return null;
     }
 }

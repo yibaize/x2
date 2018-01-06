@@ -1,5 +1,6 @@
 package org.baize.player;
 
+import org.baize.RandomUtils;
 import org.baize.login.NameDataTable;
 import org.baize.model.JdbcModel;
 import org.baize.player.weath.Weath;
@@ -60,11 +61,11 @@ public class PlayerEntity implements JdbcModel{
         banker.setAccount(account);
         PlayerInfo info = new PlayerInfo();
         StringBuilder sb = new StringBuilder();
-        NameDataTable dataTable = NameDataTable.get(id());
+        NameDataTable dataTable = NameDataTable.get(RandomUtils.randomIndex(64));
         sb.append(dataTable.getGender());
-        dataTable = NameDataTable.get(id());
+        dataTable = NameDataTable.get(RandomUtils.randomIndex(64));
         sb.append(dataTable.getSymbol());
-        dataTable = NameDataTable.get(id());
+        dataTable = NameDataTable.get(RandomUtils.randomIndex(64));
         sb.append(dataTable.getName());
         info.setName(sb.toString());
         info.setHeadName("h_1");
@@ -72,15 +73,19 @@ public class PlayerEntity implements JdbcModel{
         banker.setWeath(w);
         return banker;
    }
-   private static int id(){
-       double d = Math.random();
-       int j = (int) (d * 64)+1;
-       return j;
-   }
 
     @Override
     public boolean equals(Object obj) {
        PlayerEntity e = (PlayerEntity) obj;
         return account == e.getAccount();
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerEntity{" +
+                "account='" + account + '\'' +
+                ", playerinfo=" + playerinfo +
+                ", weath=" + weath +
+                '}';
     }
 }

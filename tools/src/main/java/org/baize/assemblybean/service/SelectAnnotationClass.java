@@ -38,22 +38,19 @@ public class SelectAnnotationClass {
             return;
         for (Class c:clazzs) {
             Annotation proco = c.getAnnotation(Protocol.class);
+            Annotation prostuff = c.getAnnotation(Protostuff.class);
+            Annotation table = c.getAnnotation(DataTable.class);
+            Annotation excel = c.getAnnotation(ExcelInversion.class);
             if(proco instanceof Protocol){
                 Protocol proco1 = (Protocol) proco;
                 protocolSet.add(new CodeModel(proco1.value(),c));
-            }
-            Annotation prostuff = c.getAnnotation(Protostuff.class);
-            if(prostuff instanceof Protostuff){
+            }else if(prostuff instanceof Protostuff){
                 //Protostuff protostuff = (Protostuff)prostuff;
                 protostuffSet.add(new CodeModel("",c));
-            }
-            Annotation table = c.getAnnotation(DataTable.class);
-            if(table instanceof DataTable){
+            }else if(table instanceof DataTable){
                 //DataTable dataTable1 = (DataTable)table;
                 dataTableSet.add(new CodeModel("",c));
-            }
-            Annotation excel = c.getAnnotation(ExcelInversion.class);
-            if(excel instanceof ExcelInversion){
+            }else if(excel instanceof ExcelInversion){
                 org.baize.excel.ExcelInversion.err.add(new CodeModel("",c));
             }
         }

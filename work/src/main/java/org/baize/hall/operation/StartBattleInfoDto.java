@@ -12,6 +12,9 @@ import org.baize.message.IProtostuff;
 public class StartBattleInfoDto implements IProtostuff {
     private int endTime;
 
+    public StartBattleInfoDto() {
+    }
+
     public StartBattleInfoDto(int endTime) {
         this.endTime = endTime;
     }

@@ -12,7 +12,7 @@ import org.baize.receiver.OperateCommandAbstract;
  * 时间： 2018/1/2.
  * 描述：
  */
-@Protocol("3")
+@Protocol("4")
 public class BottomCommand extends OperateCommandAbstract {
     private final int position;
     private final long count;

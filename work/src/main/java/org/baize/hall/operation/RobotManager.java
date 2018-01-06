@@ -36,6 +36,7 @@ public class RobotManager {
     private int timer;
     private Runnable runnable = () -> {
         timer++;
+        System.out.println(timer+":"+this.getClass());
         if(timer == 1){
             for (GamblingParty g:robot){
                 g.startBatlle();
@@ -52,6 +53,7 @@ public class RobotManager {
             for (GamblingParty g:robot){
                 g.endBattle();
             }
+            timer = 0;
         }
     };
 }
