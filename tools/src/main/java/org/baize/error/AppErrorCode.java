@@ -28,5 +28,6 @@ public final class AppErrorCode{
     public final static int LOGIN_ERR = 7;
     @ExcelValue(value = "登录失败")
     public final static int LOGIN_FAIL = 8;
-
+    @ExcelValue(value = "服务器爆满...")
+    public final static int SERVER_BE_PACKED = 9;
 }

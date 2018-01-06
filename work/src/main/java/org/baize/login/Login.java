@@ -29,6 +29,8 @@ public class Login extends OperateCommandAbstract {
 
     @Override
     public IProtostuff execute() {
+        if(SessionManager.onLinePlayerNum() >= 200)
+            new GenaryAppError(AppErrorCode.SERVER_BE_PACKED);
         ISession session = getSession();
         PlayerOperation operation = (PlayerOperation) session.getAttachment();
         PlayerEntity entity = null;
