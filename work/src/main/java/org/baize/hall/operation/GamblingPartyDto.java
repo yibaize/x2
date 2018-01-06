@@ -13,11 +13,12 @@ import java.util.List;
  */
 @Protostuff
 public class GamblingPartyDto  implements IProtostuff {
+    /**本局庄家牌局结果及id*/
     private CardDto bankerDto;
+    /**本局牌局结果及id*/
     private List<CardDto> otherDto;
-    private int endTime;
-    /**如果大于0说明庄家有的赚*/
-    private long allMoney;
+    /**结算后庄家的金币*/
+    private long bankerGold;
     public GamblingPartyDto() {
     }
 
@@ -42,19 +43,11 @@ public class GamblingPartyDto  implements IProtostuff {
         this.otherDto = otherDto;
     }
 
-    public int getEndTime() {
-        return endTime;
+    public long getBankerGold() {
+        return bankerGold;
     }
 
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
-    }
-
-    public long getAllMoney() {
-        return allMoney;
-    }
-
-    public void setAllMoney(long allMoney) {
-        this.allMoney = allMoney;
+    public void setBankerGold(long bankerGold) {
+        this.bankerGold = bankerGold;
     }
 }

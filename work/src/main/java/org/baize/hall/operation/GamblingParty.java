@@ -11,9 +11,12 @@ import org.baize.hall.niuniu.NiuNiuRoom;
 import org.baize.hall.niuniu.PlayerSet;
 import org.baize.hall.room.LeaveRoomListener;
 import org.baize.hall.room.Room;
+import org.baize.player.PlayerEntity;
 import org.baize.player.PlayerOperation;
+import org.baize.player.weath.Weath;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -59,9 +62,9 @@ public class GamblingParty implements LeaveRoomListener{
             Map<Integer, Long> other = new HashMap<>();
             for (Map.Entry<Integer, Bottom> e : bottomPosition.entrySet()) {
                 self.put(e.getKey(), e.getValue().getBotoomMoney(player));
-                other.put(e.getKey(), e.getValue().getAllMoney());
             }
             BottomDto dto = new BottomDto(self, other);
+            atomicBoolean.compareAndSet(false,true);//下注通知标记
             return dto;
         }
     }
@@ -76,6 +79,25 @@ public class GamblingParty implements LeaveRoomListener{
         Iterator<LeaveRoomListener> iterator = leaveRoomListeners.iterator();
         while (iterator.hasNext()){
             iterator.next().leave(player);
+        }
+    }
+
+    /**
+     * 通知场景玩家同步下注金额，这里用定时器的原因是防止每个玩家下一次注就要同步通知所有玩家减少网络压力
+     * 这里要每秒并且有人下注才同步一次
+     */
+    private AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+    public void notifyBottom(){
+        if(atomicBoolean.get()) {
+            Map<Integer, Long> self = new HashMap<>();
+            Map<Integer, Long> other = new HashMap<>();
+            for (Map.Entry<Integer, Bottom> e : bottomPosition.entrySet()) {
+                other.put(e.getKey(), e.getValue().getAllMoney());
+            }
+            BottomDto dto = new BottomDto(self, other);
+            //通知房间所有玩家下注金币变化
+            room.getPlayerSet().notityInto(104, dto);
+            atomicBoolean.compareAndSet(true,false);//下注通知标记
         }
     }
 
@@ -116,10 +138,11 @@ public class GamblingParty implements LeaveRoomListener{
             if(d.isResult())
                 end(d.getPosition());//玩家结算
         }
-        room.getPlayerSet().getNowBanker().getWeath().insertGold(getAllMoney());//庄家结算
-        result.setEndTime((int) (room.getEndTime()/1000));
-        result.setAllMoney(getAllMoney());
+
         room.endBattle();
+        Weath bankerweath =  room.getPlayerSet().getNowBanker().getWeath();
+        bankerweath.insertGold(getAllMoney());//庄家结算
+        result.setBankerGold(bankerweath.getGold());//庄家金币
         setAllMoney();
         room.getPlayerSet().notityInto(106,result);//通知结算
     }
