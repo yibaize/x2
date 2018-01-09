@@ -43,7 +43,7 @@ public class CreateIdUtils {
             IdModule idModule = JSON.parseObject(line,IdModule.class);
             return idModule;
         } catch (Exception e) {
-            LoggerUtils.getLogicLog().error("创建id时读取id.text文件失败",e);
+            LoggerUtils.getPlatformLog().error("创建id时读取id.text文件失败",e);
             return null;
         }
     }
@@ -57,7 +57,7 @@ public class CreateIdUtils {
             out.flush(); // 把缓存区内容压入文件
             out.close(); // 最后记得关闭文件
         }catch (Exception e){
-            LoggerUtils.getLogicLog().error("创建id时写入id.text文件失败",e);
+            LoggerUtils.getPlatformLog().error("创建id时写入id.text文件失败",e);
         }
     }
 

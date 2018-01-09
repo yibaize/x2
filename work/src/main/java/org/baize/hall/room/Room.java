@@ -5,6 +5,7 @@ import org.baize.ProtostuffUtils;
 import org.baize.hall.operation.GamblingParty;
 import org.baize.hall.operation.GamblingPartyDto;
 import org.baize.manager.Response;
+import org.baize.message.IProtostuff;
 import org.baize.player.PlayerOperation;
 import org.baize.session.SessionManager;
 
@@ -60,4 +61,5 @@ public abstract class Room implements LeaveRoomListener{
     public long getEndTime() {
         return endTime - System.currentTimeMillis();
     }
+    public abstract IProtostuff roomInfom();
 }

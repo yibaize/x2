@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LoggerUtils{
     private static Logger platformLog = null;
     private static Logger logicLog = null;
+    private static Logger debugAll = null;
     private static final ConcurrentHashMap<String, Logger> logMap = new ConcurrentHashMap();
     private static final String LOG4J_CONFIG_XML_PATH;
 
@@ -63,5 +64,10 @@ public class LoggerUtils{
         PropertyConfigurator.configure(filename.getPath());
         platformLog = LogManager.getLogger("platformlogs");
         logicLog = LogManager.getLogger("logiclogs");
+        debugAll = LogManager.getLogger("debugalls");
+    }
+
+    public static void main(String[] args) {
+        LoggerUtils.getLogicLog().debug("asdasdas");
     }
 }

@@ -1,5 +1,6 @@
 package org.baize.core;
 
+import org.baize.LoggerUtils;
 import org.baize.bean.Configration;
 import org.baize.pool.DBConnPool;
 
@@ -23,7 +24,7 @@ public class DBManager {
         try {
             pros.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("dp.properties"));
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error(e);
         }
         conf = new Configration();
         conf.setDriver(pros.getProperty("driver"));
@@ -58,7 +59,7 @@ public class DBManager {
             return DriverManager.getConnection(conf.getUrl(),
                     conf.getUser(),conf.getPwd());     //直接建立连接，后期增加连接池处理，提高效率！！！
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("创建数据库链接是异常",e);
             return null;
         }
     }
@@ -80,14 +81,14 @@ public class DBManager {
                 rs.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("关闭数据库链接是异常",e);
         }
         try {
             if(ps!=null){
                 ps.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("关闭数据库链接是异常",e);
         }
         pool.close(conn);
     }
@@ -103,7 +104,7 @@ public class DBManager {
                 ps.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("关闭数据库链接是异常",e);
         }
         pool.close(conn);
     }

@@ -81,7 +81,7 @@ public class CheckType {
         }
         if (StringUtils.isBlank(type)) {
             type = "Object";
-            System.err.println("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
+            LoggerUtils.getPlatformLog().info("对象"+beanName+"的"+fieldName+"变量的类型属性"+t+"不正确：反射数据类型异常将自动转为string类型");
         }
         return type;
     }
@@ -200,7 +200,7 @@ public class CheckType {
                 break;
         }
         if(StringUtils.isEmpty(type))
-            LoggerUtils.getLogicLog().debug("协议类"+clazz+"的"+str+"类型异常错误");
+            LoggerUtils.getPlatformLog().debug("协议类"+clazz+"的"+str+"类型异常错误");
         return type;
     }
     /**
@@ -225,7 +225,7 @@ public class CheckType {
                 break;
         }
         if (StringUtils.isBlank(type))
-            LoggerUtils.getLogicLog().debug("反射数据类型异常");
+            LoggerUtils.getPlatformLog().debug("反射数据类型异常");
         return type;
     }
 
@@ -244,7 +244,7 @@ public class CheckType {
             type = CheckType.getArrType(genericClazz.getName(),beanName,fieldName);
         }
         if (StringUtils.isBlank(type))
-            LoggerUtils.getLogicLog().debug("集合类型错误异常");
+            LoggerUtils.getPlatformLog().debug("集合类型错误异常");
         return type;
     }
 }

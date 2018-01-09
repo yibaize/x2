@@ -2,6 +2,7 @@ package org.baize.hall.niuniu;
 import org.baize.hall.operation.GamblingParty;
 import org.baize.hall.room.Room;
 import org.baize.hall.room.RoomInfoDto;
+import org.baize.message.IProtostuff;
 import org.baize.player.PlayerEntity;
 import org.baize.player.PlayerOperation;
 import java.util.ArrayList;
@@ -25,7 +26,19 @@ public class NiuNiuRoom extends Room{
         return playerSet;
     }
 
-    public RoomInfoDto roomInfoDto(PlayerOperation player) {
+    @Override
+    public void leave(PlayerOperation player) {
+        playerSet.leave(player);
+        getGamblingParty().leave(player);
+    }
+
+    @Override
+    public void intoRoom(PlayerOperation playerOperation) {
+        playerSet.into(playerOperation);
+    }
+
+    @Override
+    public IProtostuff roomInfom() {
         RoomInfoDto dto = new RoomInfoDto();
         List<PlayerEntity> bankerList = playerSet.getBankerList();
         List<String> name = new ArrayList<>(bankerList.size());
@@ -38,15 +51,5 @@ public class NiuNiuRoom extends Room{
         dto.setRoomId(getRoomId());
         dto.setLendTime((int) getEndTime()/1000);
         return dto;
-    }
-    @Override
-    public void leave(PlayerOperation player) {
-        playerSet.leave(player);
-        getGamblingParty().leave(player);
-    }
-
-    @Override
-    public void intoRoom(PlayerOperation playerOperation) {
-        playerSet.into(playerOperation);
     }
 }

@@ -1,5 +1,7 @@
 package org.baize.assemblybean.service;
 
+import org.baize.LoggerUtils;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
@@ -45,7 +47,7 @@ public class GetFileAllInit {
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     findClassInPackageByFile(packageName, filePath, recursive, clazzs);
                 } else if ("jar".equals(protocol)) {
-                    System.out.println("jar类型的扫描");
+                    LoggerUtils.getPlatformLog().info("jar类型的扫描");
                 }
             }
 
@@ -90,7 +92,7 @@ public class GetFileAllInit {
                 try {
                     clazzs.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + "." + className));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LoggerUtils.getPlatformLog().info(e);
                 }
             }
         }

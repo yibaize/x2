@@ -1,5 +1,6 @@
 package org.baize.core;
 
+import org.baize.LoggerUtils;
 import org.baize.bean.ColumnInfo;
 import org.baize.bean.TableInfo;
 import org.baize.utils.JDBCUtils;
@@ -38,7 +39,7 @@ public abstract class Query implements Cloneable{
             return  back.doExecute(conn, ps, rs);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("执行sql语句时异常",e);
             return null;
         }finally{
             DBManager.close(rs,ps,conn);
@@ -63,7 +64,7 @@ public abstract class Query implements Cloneable{
             System.out.println(ps);
             count  = ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("执行sql语句时异常",e);
         }finally{
             DBManager.close(ps,conn);
         }
@@ -201,7 +202,7 @@ public abstract class Query implements Cloneable{
                         list.add(rowObj);
                     }
                 }catch (Exception e) {
-                    e.printStackTrace();
+                    LoggerUtils.getPlatformLog().error("执行sql语句时异常",e);
                 }
                 return list;
         });

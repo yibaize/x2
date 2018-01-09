@@ -1,5 +1,7 @@
 package org.baize.clone;
 
+import org.baize.LoggerUtils;
+
 import java.io.*;
 
 /**
@@ -26,7 +28,7 @@ public class CloneUtils {
             cloneObj = (T) ois.readObject();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("克隆"+t+"对象序列化是出现异常",e);
         } finally {
             try {
                 if (ois == null)
@@ -34,7 +36,7 @@ public class CloneUtils {
                 if (objs == null)
                     objs.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().error("克隆对象"+t+"序列化是出现异常",e);
             }
         }
         return cloneObj;

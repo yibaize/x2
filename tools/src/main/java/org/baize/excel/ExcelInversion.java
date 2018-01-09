@@ -1,6 +1,7 @@
 package org.baize.excel;
 
 import org.apache.poi.hssf.usermodel.*;
+import org.baize.LoggerUtils;
 import org.baize.StringUtils;
 import org.baize.assemblybean.annon.ExcelValue;
 import org.baize.assemblybean.service.CodeModel;
@@ -61,7 +62,7 @@ public class ExcelInversion {
             wb.write(fout);
             fout.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().info("将生成excel文件保存到指定路径下时出现异常",e);
         }
 
     }
@@ -75,7 +76,7 @@ public class ExcelInversion {
                 o = model.getClazz().newInstance();
                 reflectField(o);
             } catch (Exception e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().info("反射对象是出现异常",e);
             }
         }
     }
@@ -93,7 +94,7 @@ public class ExcelInversion {
             try {
                 id = f.get(o).toString();
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().info(" 获取id是出现异常",e);
             }
             if (ann instanceof ExcelValue) {
                 ExcelValue ev = (ExcelValue) ann;

@@ -1,5 +1,7 @@
 package org.baize.assemblybean.service;
 
+import org.baize.LoggerUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -30,7 +32,7 @@ public class WriteFile {
             ow.write(content);
             ow.newLine();
         }catch (Exception e){
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().info(e);
         }finally {
             try {
                 if(ow != null)

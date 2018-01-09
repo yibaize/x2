@@ -5,7 +5,7 @@ package org.baize.error;
  * 时间： 2017/12/1.
  * 描述：
  */
-public class GenaryAppError extends IError {
+public class GenaryAppError extends ErrorAbs {
     public GenaryAppError(int errorCode) {
         super(errorCode);
         throw this;

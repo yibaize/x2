@@ -1,5 +1,6 @@
 package org.baize.message;
 
+import org.baize.LoggerUtils;
 import org.baize.manager.Request;
 import org.baize.ransitshipment.IRepeater;
 import org.baize.session.ISession;
@@ -14,7 +15,7 @@ public class TcpHandler {
     public static void recieve(IRepeater ransiter){
         if(massegeRansiter == null){
            massegeRansiter = ransiter;
-            System.out.println("网络消息中转器注册成功...");
+            LoggerUtils.getPlatformLog().warn("网络消息中转器注册成功...");
         }
     }
     public static void messageRecieve(ISession session, Request request){

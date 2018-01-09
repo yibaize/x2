@@ -38,6 +38,7 @@ public class ProtostuffUtils {
             Schema<T> schema = getSchema(clazz);
             return ProtostuffIOUtil.toByteArray(obj, schema, buffer);
         } catch (Exception e) {
+            LoggerUtils.getLogicLog().error("protostuff序列化"+obj.getClass()+"对象是出现异常",e);
             return null;
         } finally {
             buffer.clear();
@@ -58,7 +59,7 @@ public class ProtostuffUtils {
             ProtostuffIOUtil.mergeFrom(data, obj, schema);
             return obj;
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getLogicLog().error("protostuff反序列化"+clazz+"对象是出现异常",e);
             return null;
         }
     }

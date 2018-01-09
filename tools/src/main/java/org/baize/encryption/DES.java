@@ -49,7 +49,7 @@ public class DES {
             //正式执行加密操作
             return cipher.doFinal(datasource);
         } catch (Throwable e) {
-            LoggerUtils.getLogicLog().error("DES加密失败");
+            LoggerUtils.getPlatformLog().error("DES加密失败");
         }
         return null;
     }
@@ -79,7 +79,7 @@ public class DES {
             // 真正开始解密操作
             return cipher.doFinal(src);
         }catch (Exception e){
-            LoggerUtils.getLogicLog().error("DES解密失败",e);
+            LoggerUtils.getPlatformLog().error("DES解密失败",e);
         }
         return null;
     }

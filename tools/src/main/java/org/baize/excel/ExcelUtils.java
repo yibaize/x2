@@ -89,12 +89,12 @@ public class ExcelUtils {
             }
             serializerFile(objs, beanName);
         } catch (Exception e) {
-            LoggerUtils.getLogicLog().error("excel表在读取"+fileName+"文件时出现异常",e);
+            LoggerUtils.getPlatformLog().error("excel表在读取"+fileName+"文件时出现异常",e);
         } finally {
             try {
                 book.close();
             } catch (Exception e) {
-                LoggerUtils.getLogicLog().error("excel表在关闭流",e);
+                LoggerUtils.getPlatformLog().error("excel表在关闭流",e);
             }
         }
     }
@@ -117,14 +117,14 @@ public class ExcelUtils {
         try {
             clazz = Class.forName(clazzName);
         } catch (ClassNotFoundException e) {
-            LoggerUtils.getLogicLog().error("excel表在反射"+clazzName+"文件时出现异常，不存在这个类路径",e);
+            LoggerUtils.getPlatformLog().error("excel表在反射"+clazzName+"文件时出现异常，不存在这个类路径",e);
         }
 
         for (int i = 0; i < objs.size(); i++) {
             try {
                 beanObj = clazz.newInstance();
             } catch (Exception e) {
-                LoggerUtils.getLogicLog().error("excel表在反射初始化"+clazz+"对象时出现异常，",e);
+                LoggerUtils.getPlatformLog().error("excel表在反射初始化"+clazz+"对象时出现异常，",e);
             }
             for (Map.Entry<String,String> e:objs.get(i).entrySet()){
                 try {
@@ -142,10 +142,10 @@ public class ExcelUtils {
                         valueObj = arrs(clazz,beanObj,e.getValue(),e.getValue());
                     }
                     if(valueObj == null)
-                        LoggerUtils.getLogicLog().debug("excel表在反射初始化"+clazz+"类时出现异常,没有"+field+"的"+valueObj+"这个类型");
+                        LoggerUtils.getPlatformLog().error("excel表在反射初始化"+clazz+"类时出现异常,没有"+field+"的"+valueObj+"这个类型");
                     field.set(beanObj,valueObj);
                 }catch (Exception ex){
-                    LoggerUtils.getLogicLog().debug("excel表在反射初始化"+clazz+"类时出现异常",ex);
+                    LoggerUtils.getPlatformLog().error("excel表在反射初始化"+clazz+"类时出现异常",ex);
                 }
             }
             if(beanObj instanceof DataTableMessage) {
@@ -156,7 +156,7 @@ public class ExcelUtils {
         //添加到所有导表缓存类中
         StaticConfigMessage staticConfigMessage = StaticConfigMessage.getInstance();
         if(staticConfigMessage == null)
-            LoggerUtils.getLogicLog().error("获取静态初始化类"+staticConfigMessage+"时出现异常取不到这个类");
+            LoggerUtils.getPlatformLog().error("获取静态初始化类"+staticConfigMessage+"时出现异常取不到这个类");
         staticConfigMessage.put(beanObj.getClass(),beanMap);
     }
     private static Object arrs(Class<?> clazz,Object bean,String fieldName,String value){
@@ -165,7 +165,7 @@ public class ExcelUtils {
             Method method = clazz.getDeclaredMethod(fieldName+"4Init",new Class[]{String.class});
             obj = method.invoke(bean,value);
         } catch (Exception e) {
-            LoggerUtils.getLogicLog().error("excel表在反射初始化"+clazz+"类时出现异常，不存在"+fieldName+"4Init方法",e);
+            LoggerUtils.getPlatformLog().error("excel表在反射初始化"+clazz+"类时出现异常，不存在"+fieldName+"4Init方法",e);
         }
         return obj;
     }

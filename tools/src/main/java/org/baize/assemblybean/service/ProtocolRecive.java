@@ -1,5 +1,6 @@
 package org.baize.assemblybean.service;
 
+import org.baize.LoggerUtils;
 import org.baize.StringUtils;
 
 import java.lang.reflect.Constructor;
@@ -58,7 +59,7 @@ public class ProtocolRecive {
             for (int j = 1;j<ids.size();j++){
                 if(i == j) continue;
                 if(ids.get(i) == ids.get(j)){
-                    System.err.println("注解为"+ids.get(i)+"的id值重复请重新设值");
+                    LoggerUtils.getPlatformLog().info("注解为"+ids.get(i)+"的id值重复请重新设值");
                     new RuntimeException("注解为"+ids.get(i)+"的id值重复请重新设值");
                 }
             }

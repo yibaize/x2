@@ -43,8 +43,8 @@ public class ServerHandlerManager extends SimpleChannelInboundHandler<Request>{
 	}
 	private void outLine(Channel channel){
 		ISession session = new SessionImpl(channel);
-//		Request r = new Request((short) CommandCode.Out_line,new Msg(""));
-//		TcpHandler.messageRecieve(session,r);
+		Msg m = new Msg("10");
+		TcpHandler.messageRecieve(session,new Request((short)5,m));
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class ServerHandlerManager extends SimpleChannelInboundHandler<Request>{
 //			}else
 			 if(e.state().equals(IdleState.ALL_IDLE)){
 				System.out.println("---读写空闲---");
-				 ctx.channel().close();
+			 	outLine(ctx.channel());
 //				ctx.channel().writeAndFlush("ping\r\n");
 			}
 		}

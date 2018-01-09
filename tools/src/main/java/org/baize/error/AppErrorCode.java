@@ -30,4 +30,6 @@ public final class AppErrorCode{
     public final static int LOGIN_FAIL = 8;
     @ExcelValue(value = "服务器爆满...")
     public final static int SERVER_BE_PACKED = 9;
+    @ExcelValue(value = "账号异常退出")
+    public final static int CONNECTION_ERROR = 10;
 }

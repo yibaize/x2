@@ -1,5 +1,6 @@
 package org.baize.core;
 
+import org.baize.LoggerUtils;
 import org.baize.bean.ColumnInfo;
 import org.baize.bean.JavaFieldGetSet;
 import org.baize.bean.TableInfo;
@@ -59,7 +60,7 @@ public class TableContext {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("负责管理数据库并生成类结构",e);
         }
         //更新类结构
 //        updateJavaPOField();
@@ -81,7 +82,7 @@ public class TableContext {
                         + StringUtils.firstChar2UpperCase(t.getTname()));
                 poClassTableMap.put(c,t);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().error("加载po包下的类",e);
             }
         }
 

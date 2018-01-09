@@ -1,8 +1,7 @@
 package org.baize.login;
 
-import org.baize.hall.bottom.BottomDto;
-import org.baize.hall.operation.GamblingParty;
 import org.baize.hall.room.Room;
+import org.baize.message.IProtostuff;
 import org.baize.player.PlayerOperation;
 
 /**
@@ -22,5 +21,10 @@ public class MainRoom extends Room{
     @Override
     public void intoRoom(PlayerOperation playerOperation) {
 
+    }
+
+    @Override
+    public IProtostuff roomInfom() {
+        return null;
     }
 }

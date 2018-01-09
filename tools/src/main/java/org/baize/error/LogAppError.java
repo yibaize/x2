@@ -5,7 +5,7 @@ package org.baize.error;
  * 时间： 2017/12/1.
  * 描述：
  */
-public class LogAppError extends IError {
+public class LogAppError extends ErrorAbs {
     public LogAppError(int errorCode) {
         super(errorCode);
     }

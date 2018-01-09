@@ -1,5 +1,6 @@
 package org.baize.utils;
 
+import org.baize.LoggerUtils;
 import org.baize.bean.ColumnInfo;
 import org.baize.bean.JavaFieldGetSet;
 import org.baize.bean.TableInfo;
@@ -92,7 +93,7 @@ public class JavaFieldUtils {
         try {
             bw = new BufferedWriter(new FileWriter(f.getAbsoluteFile()+"/"+StringUtils.firstChar2UpperCase(tableInfo.getTname())+".java"));
             bw.write(src);
-            System.out.println("建立表"+tableInfo.getTname()+"对应的java类"+StringUtils.firstChar2UpperCase(tableInfo.getTname())+".java");
+            LoggerUtils.getPlatformLog().info("建立表"+tableInfo.getTname()+"对应的java类"+StringUtils.firstChar2UpperCase(tableInfo.getTname())+".java");
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -101,7 +102,7 @@ public class JavaFieldUtils {
                     bw.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().error("关闭bw流时异常",e);
             }
         }
     }

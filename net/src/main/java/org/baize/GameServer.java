@@ -40,22 +40,21 @@ public final class GameServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new ResponseEncoderManager());
                             ch.pipeline().addLast(new RequestDecoderManager());
-                            ch.pipeline().addLast(new IdleStateHandler(10,9,8, TimeUnit.SECONDS));
+                            ch.pipeline().addLast(new IdleStateHandler(60,60,60, TimeUnit.SECONDS));
                             ch.pipeline().addLast(new ServerHandlerManager());
                         }
                     });
             //绑定端口
             ChannelFuture f = b.bind(PORT).sync();
-            System.out.println("---------------服务器启动成功------------------");
+            LoggerUtils.getPlatformLog().warn("---------------服务器启动成功------------------");
             f.channel().closeFuture().sync();//等待服务端监听关闭
         }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("---------------服务器启动失败------------------");
+            LoggerUtils.getPlatformLog().error("---------------服务器启动失败------------------",e);
         }finally {
             //优雅退出线程
             BOSS_GROUP.shutdownGracefully();
             WORKER_GROUP.shutdownGracefully();
-            System.out.println("---------------服务器关闭------------------");
+            LoggerUtils.getPlatformLog().warn("---------------服务器关闭------------------");
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.baize.utils;
 
+import org.baize.LoggerUtils;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -15,7 +17,7 @@ public class JDBCUtils {
                 try {
                     ps.setObject(1+i, params[i]);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LoggerUtils.getPlatformLog().error("设置对象时异常",e);
                 }
             }
         }

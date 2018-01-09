@@ -2,9 +2,11 @@ package org.baize.login;
 
 import org.baize.assemblybean.annon.Protocol;
 import org.baize.error.AppErrorCode;
+import org.baize.error.CloseConnectionError;
 import org.baize.error.GenaryAppError;
 import org.baize.hall.room.Room;
 import org.baize.hall.room.RoomManager;
+import org.baize.manager.Response;
 import org.baize.message.IProtostuff;
 import org.baize.player.PlayerDataTable;
 import org.baize.player.PlayerEntity;
@@ -30,7 +32,7 @@ public class Login extends OperateCommandAbstract {
     @Override
     public IProtostuff execute() {
         if(SessionManager.onLinePlayerNum() >= 200)
-            new GenaryAppError(AppErrorCode.SERVER_BE_PACKED);
+            new CloseConnectionError(AppErrorCode.SERVER_BE_PACKED);
         ISession session = getSession();
         PlayerOperation operation = (PlayerOperation) session.getAttachment();
         PlayerEntity entity = null;
@@ -64,6 +66,7 @@ public class Login extends OperateCommandAbstract {
     /**账号已经被登陆,踢老用户下线*/
     private void hasLogin(ISession session){
         session.removeAttachment();
+        session.write(new Response((short) 404,null));
         session.close();
     }
 

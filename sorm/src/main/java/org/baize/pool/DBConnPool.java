@@ -1,5 +1,6 @@
 package org.baize.pool;
 
+import org.baize.LoggerUtils;
 import org.baize.core.DBManager;
 
 import java.sql.Connection;
@@ -67,7 +68,7 @@ public class DBConnPool {
                     conn.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LoggerUtils.getPlatformLog().error("将数据库链接放回池中时异常",e);
             }
         }else {
             pool.add(conn);

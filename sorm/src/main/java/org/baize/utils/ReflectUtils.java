@@ -1,5 +1,7 @@
 package org.baize.utils;
 
+import org.baize.LoggerUtils;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +19,7 @@ public class ReflectUtils {
             Method m = c.getDeclaredMethod("get"+ StringUtils.firstChar2UpperCase(fieldName),null);
             return m.invoke(o,null);
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("发射赋值对象时异常",e);
             return null;
         }
     }
@@ -29,7 +31,7 @@ public class ReflectUtils {
                 m.invoke(obj, columnValue);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getPlatformLog().error("发射赋值对象时异常",e);
         }
 
     }

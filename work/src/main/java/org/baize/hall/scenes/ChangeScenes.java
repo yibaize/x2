@@ -24,6 +24,6 @@ public class ChangeScenes extends OperateCommandAbstract {
         Room room = RoomManager.getInstance().getRoomById(roomId);
         PlayerOperation p = (PlayerOperation) getSession().getAttachment();
         p.setRoom(room);
-        return null;
+        return room.roomInfom();
     }
 }
