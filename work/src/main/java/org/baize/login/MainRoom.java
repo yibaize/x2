@@ -4,6 +4,9 @@ import org.baize.hall.room.Room;
 import org.baize.message.IProtostuff;
 import org.baize.player.PlayerOperation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 作者： 白泽
  * 时间： 2018/1/2.
@@ -26,5 +29,10 @@ public class MainRoom extends Room{
     @Override
     public IProtostuff roomInfom() {
         return null;
+    }
+
+    @Override
+    public List<PlayerOperation> getPlayers() {
+        return new ArrayList<>(0);
     }
 }

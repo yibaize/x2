@@ -9,6 +9,7 @@ import org.baize.message.IProtostuff;
 import org.baize.player.PlayerOperation;
 import org.baize.session.SessionManager;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,4 +63,5 @@ public abstract class Room implements LeaveRoomListener{
         return endTime - System.currentTimeMillis();
     }
     public abstract IProtostuff roomInfom();
+    public abstract List<PlayerOperation> getPlayers();
 }

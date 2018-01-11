@@ -52,4 +52,9 @@ public class NiuNiuRoom extends Room{
         dto.setLendTime((int) getEndTime()/1000);
         return dto;
     }
+
+    @Override
+    public List<PlayerOperation> getPlayers() {
+        return playerSet.allOnlinePlayer();
+    }
 }
